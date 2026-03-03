@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.qq.weixin.minigame": "file:C:/Users/Administrator/Desktop/ttttttt/minigame-tuanjie-transform-sdk",
+    "com.qq.weixin.minigame": "https://gitee.com/wechat-minigame/minigame-tuanjie-transform-sdk.git#v0.1.31",
     "com.unity.collab-proxy": "2.5.1",
     "com.unity.feature.development": "1.0.1",
     "com.unity.textmeshpro": "3.0.7",

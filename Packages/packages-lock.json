@@ -1,10 +1,11 @@
 {
   "dependencies": {
     "com.qq.weixin.minigame": {
-      "version": "file:C:/Users/Administrator/Desktop/ttttttt/minigame-tuanjie-transform-sdk",
+      "version": "https://gitee.com/wechat-minigame/minigame-tuanjie-transform-sdk.git#v0.1.31",
       "depth": 0,
-      "source": "local",
-      "dependencies": {}
+      "source": "git",
+      "dependencies": {},
+      "hash": "9de9b8d7730f65a617d9992f07c3ecfae8b9858a"
     },
     "com.unity.collab-proxy": {
       "version": "2.5.1",
