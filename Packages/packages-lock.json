@@ -1,5 +1,11 @@
 {
   "dependencies": {
+    "com.qq.weixin.minigame": {
+      "version": "file:C:/Users/Administrator/Desktop/ttttttt/minigame-tuanjie-transform-sdk",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
     "com.unity.collab-proxy": {
       "version": "2.5.1",
       "depth": 0,
