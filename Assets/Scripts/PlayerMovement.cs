@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour // Player 组件可能在父级或子级，故不使用 RequireComponent
 {
     [Header("移动设置")]
     [SerializeField] private float moveSpeed = 5f;
@@ -16,6 +16,13 @@ public class PlayerMovement : MonoBehaviour
     private int touchId = -1;
     private bool isTouching = false;
     
+    // 攻击逻辑引用
+    private Player_BattleLogic battleLogic;
+    
+    // 美术性组件引用
+    private Animator animator;
+    private Player_StateManager player;
+    
     // 2D组件引用
     private RectTransform joystickBG;
     private RectTransform joystickHandle;
@@ -25,10 +32,34 @@ public class PlayerMovement : MonoBehaviour
     
     void Start()
     {
+        // rb2D 由 RequireComponent 保证
         rb2D = GetComponent<Rigidbody2D>();
-        if (rb2D == null)
+
+        // 获取攻击逻辑组件
+        battleLogic = GetComponent<Player_BattleLogic>();
+        if (battleLogic == null)
         {
-            Debug.LogError("PlayerMovement requires a Rigidbody2D on the same GameObject.");
+            Debug.LogError("PlayerMovement requires a Player_BattleLogic on the same GameObject.");
+            enabled = false;
+            return;
+        }
+
+        // 获取美术性组件 - 必需
+        animator = GetComponent<Animator>();
+        if (animator == null)
+        {
+            Debug.LogError("PlayerMovement requires an Animator on the same GameObject.");
+            enabled = false;
+            return;
+        }
+
+        // 获取玩家组件 - 可能在当前对象、父对象或子对象
+        player = GetComponent<Player_StateManager>() ?? GetComponentInParent<Player_StateManager>() ?? GetComponentInChildren<Player_StateManager>();
+        if (player == null)
+        {
+            Debug.LogError("PlayerMovement 无法找到 Player_StateManager 组件（当前对象或其父/子）。请确保存在附带 Player_StateManager 脚本的物体。");
+            enabled = false;
+            return;
         }
 
         AssignObjects();
@@ -60,6 +91,21 @@ public class PlayerMovement : MonoBehaviour
         // 确保在未触摸时隐藏摇杆 UI，触摸时显示（防止其它意外激活）
         if (joystickBG != null) joystickBG.gameObject.SetActive(isTouching);
         if (joystickHandle != null) joystickHandle.gameObject.SetActive(isTouching);
+        
+        // 检查范围内的敌人并触发攻击逻辑
+        if (battleLogic != null)
+        {
+            battleLogic.CheckFor_PlyaerCurrentState_AttackOrShoot();
+        }
+
+        // 如果角色当前处于攻击或射击状态，则确保动画播放
+        if (player != null && (player.CurrentState == Player_StateManager.PlayerState.Attack || player.CurrentState == Player_StateManager.PlayerState.Shoot) && battleLogic != null)
+        {
+            battleLogic.PlayAttackAnimation();
+        }
+
+        CheckFor_PlyaerCurrentState_Idle();
+        CheckFor_PlyaerCurrentState_Run();
     }
     
     void FixedUpdate()
@@ -138,14 +184,49 @@ public class PlayerMovement : MonoBehaviour
         }
     }
     
+
+
+    void CheckFor_PlyaerCurrentState_Idle()
+    {
+
+        //如果玩家不触摸 或者 有触摸而且移动向量为零，则切换到 Idle 状态
+        if (!isTouching||isTouching && moveDirection == Vector2.zero)
+        {
+            rb2D.velocity = Vector2.zero;//确保完全静止
+            if (player.SetState(Player_StateManager.PlayerState.Idle))
+            {
+                animator.SetBool("isRun", false);
+            }   
+        }
+    }
+
+    void CheckFor_PlyaerCurrentState_Run()
+    {
+
+        //如果玩家有触摸而且移动向量不为零，则切换到 Run 状态
+        if (isTouching && moveDirection != Vector2.zero)
+        {
+            if (player.SetState(Player_StateManager.PlayerState.Run))
+            {
+                animator.SetBool("isRun", true);
+            }
+        }
+         else
+        {
+            rb2D.velocity = Vector2.zero;//确保完全静止
+            if (player.SetState(Player_StateManager.PlayerState.Idle))
+            {
+                animator.SetBool("isRun", false);
+            }   
+        }
+    }
     void MovePlayer()
     {
-        // 重要：只有在触摸时才移动
         if (!isTouching)
         {
-            // 不触摸时完全不移动
             return;
         }
+
         // 计算摇杆相对位移（以摇杆中心为原点）
         Vector2 joystickDelta = touchCurrentPos - joystickCenterScreen;
 
@@ -161,22 +242,20 @@ public class PlayerMovement : MonoBehaviour
         // 计算移动方向与幅度（幅度可用于模拟模拟量速度）
         moveDirection = joystickDelta.normalized;
         float analog = clampedMag / joystickMaxRadius; // 0..1
-        Vector2 movement = moveDirection * moveSpeed * analog * Time.fixedDeltaTime;
+        Vector2 targetVelocity = moveDirection * moveSpeed * analog ;
         
         // 移动玩家
-        if (rb2D != null)
-        {
-            rb2D.MovePosition(rb2D.position + movement);
-        }
-        
-        // 2D角色朝向（可选）
-        if (movement != Vector2.zero)
+        rb2D.velocity = targetVelocity;
+
+        // 2D角色朝向（仅在非攻击非射击状态时改变）
+        if ( player.CurrentState != Player_StateManager.PlayerState.Attack && player.CurrentState != Player_StateManager.PlayerState.Shoot)
         {
             // 简单的左右翻转
-            if (movement.x > 0)
+            if (targetVelocity.x > 0)
                 transform.localScale = new Vector3(1, 1, 1);
-            else if (movement.x < 0)
+            else if (targetVelocity.x < 0)
                 transform.localScale = new Vector3(-1, 1, 1);
+            
         }
     }
     
@@ -185,6 +264,12 @@ public class PlayerMovement : MonoBehaviour
         isTouching = false;
         touchId = -1;
         moveDirection = Vector2.zero; // 关键：立即重置移动方向
+        
+        // 返回 Idle 状态
+        if (player.SetState(Player_StateManager.PlayerState.Idle))
+        {
+            animator.SetBool("isRun", false);
+        }
     }
     
     // 编辑器调试用鼠标输入
