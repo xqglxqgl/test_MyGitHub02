@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ArrowMovement : MonoBehaviour
+public class ArrowMovement02 : MonoBehaviour
 {
     private float Speed = 1f; // 箭矢速度
     private Vector2 Direction;// 飞行方向
-    public Transform player{ get; set; }// 发射箭矢的玩家对象,由生成此箭矢的玩家传入引用
+
+    public Transform monster{ get; set; } // 发射箭矢的Monster对象,由生成此箭矢的Monster传入引用
 
     // 公共方法：设置飞行方向
     public void SetDirection(Vector2 direction)
@@ -33,16 +34,14 @@ public class ArrowMovement : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         
-        // 当箭矢碰撞到怪物时，销毁箭矢并对怪物造成伤害
-        if (collision.CompareTag("Monster"))
+        // 当箭矢碰撞到Player时，销毁箭矢并对Player造成伤害
+        if (collision.CompareTag("Player"))
         {
             Destroy(gameObject);
-            // 对怪物造成伤害
-            
-            // 对怪物造成伤害
-            Monster_BattleLogic monsterBattleLogic = collision.GetComponent<Monster_BattleLogic>();
-            Player_StateManager playerStateManager = player.GetComponent<Player_StateManager>();
-            monsterBattleLogic.TakeDamage(playerStateManager.Damage);
+            // 对Player造成伤害
+            Player_BattleLogic playerBattleLogic = collision.GetComponent<Player_BattleLogic>();
+            Monster_StateManager monsterStateManager = monster.GetComponent<Monster_StateManager>();
+            playerBattleLogic.TakeDamage(monsterStateManager.Damage);
         }
     }
 }

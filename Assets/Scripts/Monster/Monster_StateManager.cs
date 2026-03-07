@@ -95,16 +95,12 @@ public class Monster_StateManager : MonoBehaviour
         CurrentAttackType = newAttackType;
     }
 
-    /// <summary>
-    /// 怪物受到伤害
-    /// </summary>
-    /// <param name="amount">伤害值</param>
-    public void TakeDamage(float amount)
+
+    public void Sethealth(float newHealth)
     {
-        health -= amount;
+        health = newHealth;
         if (health <= 0)
         {
-            health = 0;
             Die();
         }
     }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Player_BattleLogic : MonoBehaviour
 {
@@ -10,8 +11,22 @@ public class Player_BattleLogic : MonoBehaviour
     private GameObject arrowPrefab;     // 箭矢预制体引用
     private float arrowSpeed = 1f;     // 箭矢速度
 
+
+    private Transform AttackPoint_Horizontal;
+    private Transform AttackPoint_Up ;
+    private Transform AttackPoint_Down ;
+
+    void Awake()
+    {
+        // 查找子对象AttackPoint并缓存攻击点的Transform引用
+        AttackPoint_Horizontal = transform.Find("AttackPoint_Horizontal");
+        AttackPoint_Up = transform.Find("AttackPoint_Up");
+        AttackPoint_Down = transform.Find("AttackPoint_Down");
+    }
+
     void Start()
     {
+
         // 在自身查找 Player_StateManager 组件
         player = GetComponent<Player_StateManager>();
         if (player == null)
@@ -107,15 +122,18 @@ public class Player_BattleLogic : MonoBehaviour
     {
         if (Mathf.Abs(attackDirection.x) > Mathf.Abs(attackDirection.y))
         {
+            player.SetAttackType(Player_StateManager.AttackType.Attack_Horizontal);
             return Player_StateManager.AttackType.Attack_Horizontal;
         }
         else if (attackDirection.y > 0)
         {
-            return (Mathf.Abs(attackDirection.x) > 0.3f) ? Player_StateManager.AttackType.Attack_Diagonal_Up : Player_StateManager.AttackType.Attack_Up;
+            player.SetAttackType(Player_StateManager.AttackType.Attack_Up);
+            return Player_StateManager.AttackType.Attack_Up;
         }
         else
         {
-            return (Mathf.Abs(attackDirection.x) > 0.3f) ? Player_StateManager.AttackType.Attack_Diagonal_Down : Player_StateManager.AttackType.Attack_Down;
+            player.SetAttackType(Player_StateManager.AttackType.Attack_Down);
+            return Player_StateManager.AttackType.Attack_Down;
         }
     }
 
@@ -125,7 +143,7 @@ public class Player_BattleLogic : MonoBehaviour
     private Player_StateManager.ShootType DetermineShootType()
     {
         if (Mathf.Abs(attackDirection.x) > Mathf.Abs(attackDirection.y))
-        {
+        {           
             return Player_StateManager.ShootType.Shoot_Horizontal;
         }
         else if (attackDirection.y > 0)
@@ -191,14 +209,9 @@ public class Player_BattleLogic : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// AnimationEvent: 在射击动画的特定帧调用，用于实际生成并发射箭矢。
-    /// </summary>
-    /// <remarks>
-    /// 此方法应在Unity编辑器的动画窗口中，为射击动画剪辑添加一个动画事件来调用。
-    /// 它负责实例化箭矢预制体，设置其初始位置和旋转，并赋予其飞行的初速度。
-    /// </remarks>
-    void OutShootArrow()
+
+    // AnimationEvent: 在射击动画的特定帧调用，用于实际生成并发射箭矢。
+    private void OutShootArrow()
     {
         if (arrowPrefab == null)
         {
@@ -209,12 +222,14 @@ public class Player_BattleLogic : MonoBehaviour
         // 生成箭矢在世界坐标系中，位置相对于Player
         Vector3 spawnPosition = transform.position + new Vector3(-0.011f, -0.118f, -1f);
         GameObject arrow = Instantiate(arrowPrefab, spawnPosition, Quaternion.identity);
-        
+
+        // 设置箭矢的飞行方向和速度，以及发射箭矢的玩家对象引用
         ArrowMovement arrowMovement = arrow.GetComponent<ArrowMovement>();
         if (arrowMovement != null)
         {
             arrowMovement.SetDirection(attackDirection);
             arrowMovement.SetSpeed(arrowSpeed);
+            arrowMovement.player = transform; // 传入该发出箭矢的玩家对象引用，方便访问该玩家的属性
         }
         else
         {
@@ -227,5 +242,45 @@ public class Player_BattleLogic : MonoBehaviour
             arrow.transform.right = attackDirection;
         }
 
+    }
+
+    //AnimatorEvent：Attack动画进行到一半时（刀砍下）调用
+    private void Active_AttackPoint()
+    {
+        switch (player.CurrentAttackType)
+        {
+            case Player_StateManager.AttackType.Attack_Horizontal:
+                // 水平攻击逻辑
+                AttackPoint_Horizontal.gameObject.SetActive(true);
+                break;
+            case Player_StateManager.AttackType.Attack_Up:
+                // 向上攻击逻辑
+                AttackPoint_Up.gameObject.SetActive(true);
+                break;
+            case Player_StateManager.AttackType.Attack_Down:
+                // 向下攻击逻辑
+                AttackPoint_Down.gameObject.SetActive(true);
+                break;
+        }
+    }
+
+    //AnimatorEvent：Attack动画结束时（刀收回）调用
+    private void Deactive_AttackPoint()
+    {
+        AttackPoint_Horizontal.gameObject.SetActive(false);
+        AttackPoint_Up.gameObject.SetActive(false);
+        AttackPoint_Down.gameObject.SetActive(false);
+    }
+
+
+    /// <summary>
+    /// Player受到伤害时调用，减少生命值
+    /// </summary>
+    /// <param name="amount">伤害值</param>
+    public void TakeDamage(float amount)
+    {
+        player.Sethealth(player.Health - amount);
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.DOColor(Color.red, 0.1f).OnComplete(() => spriteRenderer.DOColor(Color.white, 0.1f));
     }
 }

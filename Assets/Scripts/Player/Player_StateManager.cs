@@ -67,8 +67,8 @@ public class Player_StateManager : MonoBehaviour
     // 属性访问器
     private int Level { get => level; set => level = value; }
     public Profession PlayerProfession { get => profession; set => profession = value; }  // 公开职业信息
-    private float Health { get => health; set => health = value; }
-    private float Damage { get => damage; set => damage = value; }
+    public float Health { get => health; set => health = value; }
+    public float Damage { get => damage; set => damage = value; }
     private float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
     public float AttackRange => attackRange;
     private int AttackSpeedLevel { get => attackSpeedLevel; set => attackSpeedLevel = value; }
@@ -76,7 +76,7 @@ public class Player_StateManager : MonoBehaviour
     private int KnockbackResistanceLevel { get => knockbackResistanceLevel; set => knockbackResistanceLevel = value; }
     // 当前状态（公开读取）
     public PlayerState CurrentState { get => currentState; set => currentState = value; }
-    private AttackType CurrentAttackType { get => currentAttackType; set => currentAttackType = value; }
+    public AttackType CurrentAttackType { get => currentAttackType; set => currentAttackType = value; }
     private ShootType CurrentShootType { get => currentShootType; set => currentShootType = value; }
     public bool CanChangeState { get => canChangeState; set => canChangeState = value; }
 
@@ -105,6 +105,30 @@ public class Player_StateManager : MonoBehaviour
     public void SetAttackType(AttackType type) { currentAttackType = type; }
     
     public void SetShootType(ShootType type) { currentShootType = type; }
+
+    /// <summary>
+    /// 设置玩家的当前生命值，并在生命值降至0或以下时触发死亡逻辑。
+    /// </summary>
+    /// <param name="newHealth">新的生命值值</param>
+    public void Sethealth(float newHealth)
+    {
+        health = newHealth;
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    /// <summary>
+    /// Player死亡逻辑
+    /// </summary>
+    private void Die()
+    {
+        // 在这里处理死亡逻辑，例如播放死亡动画、掉落物品、从场景中移除等
+        Debug.Log($"{gameObject.name} has died.");
+        Destroy(gameObject);
+    }
+
 }
     
 
