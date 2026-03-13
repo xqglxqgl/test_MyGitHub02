@@ -621,8 +621,6 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_virtualGeometryShadow: 0
   m_ShadingRate: 0
   m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
@@ -806,6 +804,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd16b5048490a5848bf9219377d184d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Panel_ChoseProfession: {fileID: 963493338}
+  Panel_ChoseDifficulty: {fileID: 1972227502}
+  PlayerPrefab_Warrior: {fileID: 8995970087377964242, guid: e5df00acd625d0d4997f267928b9c356, type: 3}
+  PlayerPrefab_Archer: {fileID: 1094944783890610783, guid: e957605192c29df4d9323ca652bdfc39, type: 3}
+  button_ChoseWarrior: {fileID: 1273333479}
+  button_ChoseArcher: {fileID: 63965396}
+  button_Eazy: {fileID: 811205872}
+  button_Normal: {fileID: 194932473}
+  button_Hard: {fileID: 372942838}
 --- !u!114 &269513800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1952,8 +1959,6 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_virtualGeometryShadow: 0
   m_ShadingRate: 0
   m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
@@ -2360,8 +2365,6 @@ TilemapRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_virtualGeometryShadow: 0
   m_ShadingRate: 0
   m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
@@ -6910,8 +6913,6 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_virtualGeometryShadow: 0
   m_ShadingRate: 0
   m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
@@ -7533,8 +7534,6 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_virtualGeometryShadow: 0
   m_ShadingRate: 0
   m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
@@ -7924,8 +7923,6 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_virtualGeometryShadow: 0
   m_ShadingRate: 0
   m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
@@ -8037,8 +8034,6 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_virtualGeometryShadow: 0
   m_ShadingRate: 0
   m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
@@ -9156,8 +9151,6 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_virtualGeometryShadow: 0
   m_ShadingRate: 0
   m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
@@ -9389,8 +9382,6 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_virtualGeometryShadow: 0
   m_ShadingRate: 0
   m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1

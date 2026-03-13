@@ -6,39 +6,28 @@ using UnityEngine.UI;
 public class BottonManager : MonoBehaviour
 {
 
-    private GameObject Panel_ChoseProfession;
-    private GameObject Panel_ChoseDifficulty;
+    public GameObject Panel_ChoseProfession;
+    public GameObject Panel_ChoseDifficulty;
 
-    private GameObject PlayerPrefab_Warrior;
-    private GameObject PlayerPrefab_Archer;
+    public GameObject PlayerPrefab_Warrior;
+    public GameObject PlayerPrefab_Archer;
 
-    private Button button_ChoseWarrior;
-    private Button button_ChoseArcher;
-    private Button button_Eazy;
-    private Button button_Normal;
-    private Button button_Hard;
+    public Button button_ChoseWarrior;
+    public Button button_ChoseArcher;
+    public Button button_Eazy;
+    public Button button_Normal;
+    public Button button_Hard;
 
     void Awake()
     {
         // 初始化UI元素
-        Panel_ChoseProfession = GameObject.Find("Canvas/GameStart/Panel_ChoseProfession");
-        Panel_ChoseDifficulty = GameObject.Find("Canvas/GameStart/Panel_ChoseDifficulty");
+        // Panel_ChoseProfession = GameObject.Find("Canvas/GameStart/Panel_ChoseProfession");
+        // Panel_ChoseDifficulty = GameObject.Find("Canvas/GameStart/Panel_ChoseDifficulty");
 
-        // 加载玩家预制体
-        PlayerPrefab_Warrior = Resources.Load<GameObject>("Prefabs/Player_Warrior");
-        PlayerPrefab_Archer = Resources.Load<GameObject>("Prefabs/Player_Archer");
+        // // 加载玩家预制体
+        // PlayerPrefab_Warrior = Resources.Load<GameObject>("Prefabs/Player_Warrior");
+        // PlayerPrefab_Archer = Resources.Load<GameObject>("Prefabs/Player_Archer");
 
-
-    }
-
-    void Start()
-    {
-        // 初始化按钮
-        button_ChoseWarrior = GameObject.Find("Button_ChoseWarrior").GetComponent<Button>();
-        button_ChoseArcher = GameObject.Find("Button_ChoseArcher").GetComponent<Button>();
-        button_Eazy = GameObject.Find("Button_ChoseEazy").GetComponent<Button>();
-        button_Normal = GameObject.Find("Button_ChoseNormal").GetComponent<Button>();
-        button_Hard = GameObject.Find("Button_ChoseHard").GetComponent<Button>();
         // 注册按钮事件
         button_ChoseWarrior.onClick.AddListener(Button_ChoseWarrior);
         button_ChoseArcher.onClick.AddListener(Button_ChoseArcher);
@@ -46,6 +35,22 @@ public class BottonManager : MonoBehaviour
         button_Normal.onClick.AddListener(Button_ChoseNormal);
         button_Hard.onClick.AddListener(Button_ChoseHard);
     }
+
+    // void Start()
+    // {
+    //     // 初始化按钮
+    //     button_ChoseWarrior = GameObject.Find("Button_ChoseWarrior").GetComponent<Button>();
+    //     button_ChoseArcher = GameObject.Find("Button_ChoseArcher").GetComponent<Button>();
+    //     button_Eazy = GameObject.Find("Button_ChoseEazy").GetComponent<Button>();
+    //     button_Normal = GameObject.Find("Button_ChoseNormal").GetComponent<Button>();
+    //     button_Hard = GameObject.Find("Button_ChoseHard").GetComponent<Button>();
+    //     // 注册按钮事件
+    //     button_ChoseWarrior.onClick.AddListener(Button_ChoseWarrior);
+    //     button_ChoseArcher.onClick.AddListener(Button_ChoseArcher);
+    //     button_Eazy.onClick.AddListener(Button_ChoseEazy);
+    //     button_Normal.onClick.AddListener(Button_ChoseNormal);
+    //     button_Hard.onClick.AddListener(Button_ChoseHard);
+    // }
 
     // 等待1秒才开始初始化按钮
     IEnumerator WaitForBottonToAppear()
