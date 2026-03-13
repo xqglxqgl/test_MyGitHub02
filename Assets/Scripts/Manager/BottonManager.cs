@@ -5,19 +5,6 @@ using UnityEngine.UI;
 
 public class BottonManager : MonoBehaviour
 {
-
-    public GameObject Panel_ChoseProfession;
-    public GameObject Panel_ChoseDifficulty;
-
-    public GameObject PlayerPrefab_Warrior;
-    public GameObject PlayerPrefab_Archer;
-
-    public Button button_ChoseWarrior;
-    public Button button_ChoseArcher;
-    public Button button_Eazy;
-    public Button button_Normal;
-    public Button button_Hard;
-
     void Awake()
     {
         // 初始化UI元素
@@ -29,11 +16,8 @@ public class BottonManager : MonoBehaviour
         // PlayerPrefab_Archer = Resources.Load<GameObject>("Prefabs/Player_Archer");
 
         // 注册按钮事件
-        button_ChoseWarrior.onClick.AddListener(Button_ChoseWarrior);
-        button_ChoseArcher.onClick.AddListener(Button_ChoseArcher);
-        button_Eazy.onClick.AddListener(Button_ChoseEazy);
-        button_Normal.onClick.AddListener(Button_ChoseNormal);
-        button_Hard.onClick.AddListener(Button_ChoseHard);
+
+
     }
 
     // void Start()
@@ -58,38 +42,7 @@ public class BottonManager : MonoBehaviour
         yield return new WaitForSeconds(1f); // 等待一秒
     }
 
-    public void Button_ChoseWarrior()
-    {
-        GameManager.Instance.SpawnPlayer(PlayerPrefab_Warrior, Vector3.zero);
-        Panel_ChoseProfession.SetActive(false);
-        Panel_ChoseDifficulty.SetActive(true);
-    }
 
-    public void Button_ChoseArcher()
-    {
-        GameManager.Instance.SpawnPlayer(PlayerPrefab_Archer, Vector3.zero);
-        Panel_ChoseProfession.SetActive(false);
-        Panel_ChoseDifficulty.SetActive(true);
-    }
 
-    public void Button_ChoseEazy()
-    {
-        GameManager.Instance.currentDifficulty = GameManager.Difficulty.Easy;
-        Panel_ChoseProfession.SetActive(false);
-        Panel_ChoseDifficulty.SetActive(false);
-    }
 
-    public void Button_ChoseNormal()
-    {
-        GameManager.Instance.currentDifficulty = GameManager.Difficulty.Normal;
-        Panel_ChoseProfession.SetActive(false);
-        Panel_ChoseDifficulty.SetActive(false);
-    }
-    
-    public void Button_ChoseHard()
-    {
-        GameManager.Instance.currentDifficulty = GameManager.Difficulty.Hard;
-        Panel_ChoseProfession.SetActive(false);
-        Panel_ChoseDifficulty.SetActive(false);
-    }
 }

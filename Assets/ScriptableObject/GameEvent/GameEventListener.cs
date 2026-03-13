@@ -20,7 +20,6 @@ public class GameEventListener : MonoBehaviour
         if (gameEvent != null)
             gameEvent.UnregisterListener(this);
     }
-
     public void OnEventRaised()
     {
         onEventRaised?.Invoke();

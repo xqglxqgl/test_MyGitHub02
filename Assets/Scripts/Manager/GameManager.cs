@@ -35,7 +35,6 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
     }
 
     private void Start()
@@ -57,4 +56,6 @@ public class GameManager : MonoBehaviour
         GameObject player = Instantiate(playerPrefab, position, Quaternion.identity);
         onPlayerSpawned?.Raise(player);
     }
+
+    
 }

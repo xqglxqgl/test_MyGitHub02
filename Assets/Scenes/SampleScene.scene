@@ -621,6 +621,8 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_virtualGeometry: 0
+  m_virtualGeometryShadow: 0
   m_ShadingRate: 0
   m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
@@ -686,8 +688,7 @@ GameObject:
   - component: {fileID: 269513793}
   - component: {fileID: 269513792}
   - component: {fileID: 269513796}
-  - component: {fileID: 269513798}
-  - component: {fileID: 269513800}
+  - component: {fileID: 269513797}
   m_Layer: 5
   m_HasEditorInfo: 1
   m_Name: Canvas
@@ -792,28 +793,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9699cf91d7c7d304db40964e2bc08248, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &269513798
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 269513791}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd16b5048490a5848bf9219377d184d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Panel_ChoseProfession: {fileID: 963493338}
-  Panel_ChoseDifficulty: {fileID: 1972227502}
-  PlayerPrefab_Warrior: {fileID: 8995970087377964242, guid: e5df00acd625d0d4997f267928b9c356, type: 3}
-  PlayerPrefab_Archer: {fileID: 1094944783890610783, guid: e957605192c29df4d9323ca652bdfc39, type: 3}
-  button_ChoseWarrior: {fileID: 1273333479}
-  button_ChoseArcher: {fileID: 63965396}
-  button_Eazy: {fileID: 811205872}
-  button_Normal: {fileID: 194932473}
-  button_Hard: {fileID: 372942838}
---- !u!114 &269513800
+  PanelGameStart: {fileID: 1971331758}
+--- !u!114 &269513797
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -825,7 +806,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af48cf2ca4afefc4285121ce196792b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: 5c760e2cb78dec241aa16af1703a3fa6, type: 2}
+  gameEvent: {fileID: 0}
   onEventRaised:
     m_PersistentCalls:
       m_Calls:
@@ -1959,6 +1940,8 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_virtualGeometry: 0
+  m_virtualGeometryShadow: 0
   m_ShadingRate: 0
   m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
@@ -2365,6 +2348,8 @@ TilemapRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_virtualGeometry: 0
+  m_virtualGeometryShadow: 0
   m_ShadingRate: 0
   m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
@@ -6673,6 +6658,7 @@ GameObject:
   - component: {fileID: 963493339}
   - component: {fileID: 963493341}
   - component: {fileID: 963493340}
+  - component: {fileID: 963493342}
   m_Layer: 5
   m_HasEditorInfo: 1
   m_Name: Panel_ChoseProfession
@@ -6742,6 +6728,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963493338}
   m_CullTransparentMesh: 1
+--- !u!114 &963493342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963493338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebd5a850de43d6348ae8d0484f959616, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PanelChoseProfession: {fileID: 963493338}
+  PanelChoseDifficulty: {fileID: 1972227502}
+  PlayerPrefab_Warrior: {fileID: 8995970087377964242, guid: e5df00acd625d0d4997f267928b9c356, type: 3}
+  PlayerPrefab_Archer: {fileID: 1094944783890610783, guid: e957605192c29df4d9323ca652bdfc39, type: 3}
+  button_ChoseWarrior: {fileID: 1273333479}
+  button_ChoseArcher: {fileID: 63965396}
 --- !u!1 &971161405
 GameObject:
   m_ObjectHideFlags: 0
@@ -6913,6 +6917,8 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_virtualGeometry: 0
+  m_virtualGeometryShadow: 0
   m_ShadingRate: 0
   m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
@@ -7358,7 +7364,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1273333480}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 269513796}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: GameStart
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1273333480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7534,6 +7552,8 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_virtualGeometry: 0
+  m_virtualGeometryShadow: 0
   m_ShadingRate: 0
   m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
@@ -7923,6 +7943,8 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_virtualGeometry: 0
+  m_virtualGeometryShadow: 0
   m_ShadingRate: 0
   m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
@@ -8034,6 +8056,8 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_virtualGeometry: 0
+  m_virtualGeometryShadow: 0
   m_ShadingRate: 0
   m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
@@ -9151,6 +9175,8 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_virtualGeometry: 0
+  m_virtualGeometryShadow: 0
   m_ShadingRate: 0
   m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
@@ -9382,6 +9408,8 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_virtualGeometry: 0
+  m_virtualGeometryShadow: 0
   m_ShadingRate: 0
   m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
@@ -9598,8 +9626,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 963493339}
   - {fileID: 1972227503}
+  - {fileID: 963493339}
   m_Father: {fileID: 269513795}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -9618,6 +9646,7 @@ GameObject:
   - component: {fileID: 1972227503}
   - component: {fileID: 1972227505}
   - component: {fileID: 1972227504}
+  - component: {fileID: 1972227506}
   m_Layer: 5
   m_HasEditorInfo: 1
   m_Name: Panel_ChoseDifficulty
@@ -9688,6 +9717,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1972227502}
   m_CullTransparentMesh: 1
+--- !u!114 &1972227506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1972227502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 724313c6c40eeff499b5a7cd2952abff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PanelChoseProfession: {fileID: 963493338}
+  PanelChoseDifficulty: {fileID: 1972227502}
+  button_Eazy: {fileID: 811205872}
+  button_Normal: {fileID: 194932473}
+  button_Hard: {fileID: 372942838}
 --- !u!1 &2078226825
 GameObject:
   m_ObjectHideFlags: 0
