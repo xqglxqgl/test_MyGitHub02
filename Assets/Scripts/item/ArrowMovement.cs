@@ -1,27 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class ArrowMovement : MonoBehaviour
-{
-    private float Speed = 1f; // 箭矢速度
-    private Vector2 Direction;// 飞行方向
-    public Transform player{ get; set; }// 发射箭矢的玩家对象,由生成此箭矢的玩家传入引用
+{   
+    // 箭矢生命周期计时器
+    [SerializeField] private float lifetime = 2f;
+    private float timer;
 
-    // 公共方法：设置飞行方向
-    public void SetDirection(Vector2 direction)
+    // 飞行参数
+    public float Speed { get; set; } = 10f; 
+    public Vector2 Direction{ get; set; }
+    public float Damage{ get; set; } 
+    
+    public IObjectPool<ArrowMovement> Pool{ get; set; } 
+
+
+    void OnEnable()
     {
-        Direction = direction;
+        timer = 0f;
     }
 
-    // 公共方法：设置飞行速度
-    public void SetSpeed(float speed)
-    {
-        Speed = speed;
-    }
 
-    void Start()
+    void Update()
     {
+        timer += Time.deltaTime;
+        if (timer >= lifetime)
+        {
+            // 返回对象池（不是销毁）
+            Pool.Release(this);
+        }
     }
 
     void FixedUpdate()
@@ -36,13 +45,10 @@ public class ArrowMovement : MonoBehaviour
         // 当箭矢碰撞到怪物时，销毁箭矢并对怪物造成伤害
         if (collision.CompareTag("Monster"))
         {
-            Destroy(gameObject);
-            // 对怪物造成伤害
-            
+            Pool.Release(this); // 将箭矢对象归还给对象池，而不是销毁
             // 对怪物造成伤害
             Monster_BattleLogic monsterBattleLogic = collision.GetComponent<Monster_BattleLogic>();
-            Player_StateManager playerStateManager = player.GetComponent<Player_StateManager>();
-            monsterBattleLogic.TakeDamage(playerStateManager.Damage);
+            monsterBattleLogic.TakeDamage(Damage);
         }
     }
 }

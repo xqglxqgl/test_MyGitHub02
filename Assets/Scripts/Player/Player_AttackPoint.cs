@@ -3,19 +3,19 @@ using UnityEngine;
 public class Player_AttackPoint : MonoBehaviour
 {
     // 缓存玩家状态管理器
-    private Player_StateManager playerStateManager;
+    private Player_PropertyManager playerStateManager;
 
     private void Awake()
     {
-        // 查找父对象（玩家）并获取其 Player_StateManager 组件的引用。
+        // 查找父对象（玩家）并获取其 Player_PropertyManager 组件的引用。
         GameObject player = transform.parent.gameObject;
         if (player != null)
         {
-            playerStateManager = player.GetComponent<Player_StateManager>();
+            playerStateManager = player.GetComponent<Player_PropertyManager>();
         }
         else
         {
-            Debug.LogError("父对象中未找到 Player_StateManager 组件！", this);
+            Debug.LogError("父对象中未找到 Player_PropertyManager 组件！", this);
         }
     }
 

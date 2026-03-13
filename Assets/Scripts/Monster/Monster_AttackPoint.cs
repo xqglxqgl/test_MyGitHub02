@@ -3,7 +3,7 @@ using UnityEngine;
 public class Monster_AttackPoint : MonoBehaviour
 {
     // 缓存Monster状态管理器，避免在每次触发时都进行查找，提高性能。
-    private Monster_StateManager monsterStateManager;
+    private Monster_PropertyManager monsterPropertyManager;
 
     private void Awake()
     {
@@ -11,11 +11,11 @@ public class Monster_AttackPoint : MonoBehaviour
         GameObject monster = transform.parent.gameObject;
         if (monster != null)
         {
-            monsterStateManager = monster.GetComponent<Monster_StateManager>();
+            monsterPropertyManager = monster.GetComponent<Monster_PropertyManager>();
         }
         else
         {
-            Debug.LogError("父对象中未找到 Monster_StateManager 组件！", this);
+            Debug.LogError("父对象中未找到 Monster_PropertyManager 组件！", this);
         }
     }
 
@@ -36,7 +36,7 @@ public class Monster_AttackPoint : MonoBehaviour
             if (player != null)
             {
                 // ...则调用其 TakeDamage 方法，并将怪物的伤害值作为参数传入。
-                player.TakeDamage(monsterStateManager.Damage);
+                player.TakeDamage(monsterPropertyManager.Damage);
             }
         }
     }
