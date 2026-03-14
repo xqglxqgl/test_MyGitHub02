@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -14,16 +15,16 @@ public class GameManager : MonoBehaviour
     public Difficulty currentDifficulty;
 
     [Header("Game Events")]
-    public GameEvent onGameStarted;
+    public UnityAction onGameStarted;
     //public GameEvent onGamePaused;
     //public GameEvent onGameResumed;
     //public GameEvent onGameOver;
-    public GameObjectEvent onPlayerSpawned;
+    public UnityAction<GameObject> onPlayerSpawned;
 
     [Header("Settings")]
     public bool isPaused = false;
 
-    private void Awake()
+    void Awake()
     {
         if (Instance == null)
         {
@@ -37,24 +38,25 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
+
+    void Start()
+    { 
         // 触发游戏开始事件
-        onGameStarted?.Raise();
+        onGameStarted?.Invoke();
     }
 
-    private void Update()
+    void Update()
     {
     }
 
 
 
 
-
+    // 生成玩家
     public void SpawnPlayer(GameObject playerPrefab, Vector3 position)
     {
         GameObject player = Instantiate(playerPrefab, position, Quaternion.identity);
-        onPlayerSpawned?.Raise(player);
+        onPlayerSpawned?.Invoke(player);
     }
 
     

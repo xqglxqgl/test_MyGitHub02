@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 public class UIManager : MonoBehaviour
 {  
-    [SerializeField]private GameObject PanelGameStart;
+    [SerializeField]private ChoseProfession choseProfession;
+    [SerializeField]private ChoseDifficulty choseDifficulty;
 
-    public void GameStart()
+    void Start()
     {
-        PanelGameStart.SetActive(true);
+        choseProfession.finishChoseProfession += DisActivePanel;// 订阅选择职业事件
+        choseDifficulty.finishChoseDifficulty += DisActivePanel;// 订阅选择难度事件
+    }
+    public void DisActivePanel(GameObject panel)
+    {
+        panel.SetActive(false);
     }
 }

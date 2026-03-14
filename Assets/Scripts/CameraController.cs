@@ -5,9 +5,12 @@ public class CameraController : MonoBehaviour
 {
     private CinemachineVirtualCamera virtualCamera;
     private Transform playerTransform;
-    
 
-   public void FollowPlayer(GameObject Player)
+    void Start()
+    {
+        GameManager.Instance.onPlayerSpawned += FollowPlayer;// 订阅玩家生成事件
+    }
+    public void FollowPlayer(GameObject Player)
     {
         virtualCamera = this.GetComponent<CinemachineVirtualCamera>();
         playerTransform = Player.transform;
