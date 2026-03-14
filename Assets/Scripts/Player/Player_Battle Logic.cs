@@ -8,24 +8,24 @@ public class Player_BattleLogic : MonoBehaviour
 {
     private Vector2 attackDirection;    // 当前目标方向，用于决定动画
 
-    // 攻击点的Transform引用
-    private Transform AttackPoint_Horizontal;
-    private Transform AttackPoint_Up ;
-    private Transform AttackPoint_Down ;
+    [Header("外部组件引用")]
+    [SerializeField] private Transform attackPoint_Horizontal;
+    [SerializeField] private Transform attackPoint_Up ;
+    [SerializeField] private Transform attackPoint_Down ;
+    [SerializeField] private GameObject arrowPrefab;     // 箭矢预制体引用
+    private Player player;
+   
 
-    private Player_PropertyManager player;
-    private Animator Animator;
-    private GameObject ArrowPrefab;     // 箭矢预制体引用
-    private PlayerTimer_AttackInterval AttackIntervalTimer;// 攻击间隔定时器组件
+
+    [Header("自身组件引用")]
+    [SerializeField] private Player_PropertyManager playerState;
+    [SerializeField] private Animator animator;
+    [SerializeField] private PlayerTimer_AttackInterval attackIntervalTimer;// 攻击间隔定时器组件
 
     private IObjectPool<ArrowMovement> arrowPool;// 箭矢对象池
 
     void Awake()
     {
-        // 查找子对象AttackPoint并缓存攻击点的Transform引用
-        AttackPoint_Horizontal = transform.Find("AttackPoint_Horizontal");
-        AttackPoint_Up = transform.Find("AttackPoint_Up");
-        AttackPoint_Down = transform.Find("AttackPoint_Down");
         // 创建箭矢对象池
         arrowPool = new ObjectPool<ArrowMovement>(
         createFunc: CreateArrow,           // 创建新对象的方法
@@ -40,46 +40,16 @@ public class Player_BattleLogic : MonoBehaviour
 
     void Start()
     {
+        player = GameManager.Instance.player;
 
-        // 在自身查找 Player_PropertyManager 组件
-        player = GetComponent<Player_PropertyManager>();
-        if (player == null)
-        {
-            Debug.LogError("Player_BattleLogic 无法找到 Player_PropertyManager 组件，请检查挂载位置。");
-            enabled = false;
-            return;
-        }
-
-        Animator = GetComponent<Animator>();
-        if (Animator == null)
-        {
-            Debug.LogError("Player_BattleLogic 需要一个 Animator 组件来播放攻击动画。");
-            enabled = false;
-            return;
-        }
-
-        // 加载箭矢预制体
-        ArrowPrefab = Resources.Load<GameObject>("Prefabs/ArrowPrefab");
-        if (ArrowPrefab == null)
-        {
-            Debug.LogError("无法加载 ArrowPrefab 预制体，请确保它在 Resources/Prefabs 文件夹中。");
-        }
-        // 缓存攻击间隔定时器组件
-        AttackIntervalTimer = GetComponent<PlayerTimer_AttackInterval>();
-        if (AttackIntervalTimer == null)
-        {
-            Debug.LogError("Player_BattleLogic 无法找到 PlayerTimer_AttackInterval 组件，请检查挂载位置。");
-            enabled = false;
-            return;
-        }
-
+        GameManager.Instance.onPlayerTakeDamage += TakeDamage;// 订阅玩家受到伤害事件
     }
 
     public void Judge_PlyaerCurrentState_AttackOrShoot()
     {
-        if(player.CanAttack == false)return;// 如果不能攻击，则直接返回
+        if(playerState.CanAttack == false)return;// 如果不能攻击，则直接返回
 
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, player.AttackRange);// 查找所有在攻击范围内的敌人
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, player.attackRange);// 查找所有在攻击范围内的敌人
         Transform closestEnemy = null;
         float closestDistance = float.MaxValue;
 
@@ -109,23 +79,23 @@ public class Player_BattleLogic : MonoBehaviour
 
             // 根据职业判断是进行攻击还是射击
                 // 弓箤手职业：使用射击状态
-            if (player.Profession == Player_PropertyManager.ProfessionType.Archer)
+            if (player.profession == Player.ProfessionType.Archer)
             {
                 // 根据攻击方向判断进行射击的类型，并尝试切换到该射击类型
-                player.CurrentShootType = DetermineShootType();
+                playerState.CurrentShootType = DetermineShootType();
 
                 // 切换到 Shoot 状态
-                player.CurrentState = Player_PropertyManager.PlayerState.Shoot;
+                playerState.CurrentState = Player_PropertyManager.PlayerState.Shoot;
             }
 
                 // 战士职业：使用攻击状态
-            else if (player.Profession == Player_PropertyManager.ProfessionType.Warrior)
+            else if (player.profession == Player.ProfessionType.Warrior)
             {
                 // 根据攻击方向判断进行进进行攻击的类型，并尝试切换到该攻击类型
-                player.CurrentAttackType = DetermineAttackType();
+                playerState.CurrentAttackType = DetermineAttackType();
 
                 // 切换到 Attack 状态
-                player.CurrentState = Player_PropertyManager.PlayerState.Attack;
+                playerState.CurrentState = Player_PropertyManager.PlayerState.Attack;
 
             } 
         }
@@ -172,16 +142,16 @@ public class Player_BattleLogic : MonoBehaviour
     public void PlayMeleeAttackAnimation()
     {
 
-        switch (player.CurrentAttackType)
+        switch (playerState.CurrentAttackType)
         {
             case Player_PropertyManager.AttackType.Attack_Horizontal:
-                Animator.Play("Attack_Horizontal");
+                animator.Play("Attack_Horizontal");
                 break;
             case Player_PropertyManager.AttackType.Attack_Up:
-                Animator.Play("Attack_Up");
+                animator.Play("Attack_Up");
                 break;
             case Player_PropertyManager.AttackType.Attack_Down:
-                Animator.Play("Attack_Down");
+                animator.Play("Attack_Down");
                 break;
         }
     }
@@ -189,22 +159,22 @@ public class Player_BattleLogic : MonoBehaviour
     public void PlayShootAnimation()
     {
 
-        switch (player.CurrentShootType)
+        switch (playerState.CurrentShootType)
         {
             case Player_PropertyManager.ShootType.Shoot_Horizontal:
-                Animator.Play("Shoot_Horizontal");
+                animator.Play("Shoot_Horizontal");
                 break;
             case Player_PropertyManager.ShootType.Shoot_Up:
-                Animator.Play("Shoot_Up");
+                animator.Play("Shoot_Up");
                 break;
             case Player_PropertyManager.ShootType.Shoot_Down:
-                Animator.Play("Shoot_Down");
+                animator.Play("Shoot_Down");
                 break;
             case Player_PropertyManager.ShootType.Shoot_Diagonal_Up:
-                Animator.Play("Shoot_Diagonal_Up");
+                animator.Play("Shoot_Diagonal_Up");
                 break;
             case Player_PropertyManager.ShootType.Shoot_Diagonal_Down:
-                Animator.Play("Shoot_Diagonal_Down");
+                animator.Play("Shoot_Diagonal_Down");
                 break;
         }
     }
@@ -213,7 +183,7 @@ public class Player_BattleLogic : MonoBehaviour
     // 创建箭矢实例的方法（由对象池调用）
     private ArrowMovement CreateArrow()
     {
-        if (ArrowPrefab == null)
+        if (arrowPrefab == null)
         {
             Debug.LogError("箭矢预制体引用为空，无法发射箭矢。");
             return null;
@@ -221,7 +191,7 @@ public class Player_BattleLogic : MonoBehaviour
       
         // 生成箭矢在世界坐标系中，位置相对于Player
         Vector3 spawnPosition = transform.position + new Vector3(-0.011f, -0.118f, -1f);
-        GameObject arrow = Instantiate(ArrowPrefab, spawnPosition, Quaternion.identity);
+        GameObject arrow = Instantiate(arrowPrefab, spawnPosition, Quaternion.identity);
 
         // 设置箭矢的初始飞行方向，以及发射箭矢的玩家对象引用
         ArrowMovement arrowMovement = arrow.GetComponent<ArrowMovement>();
@@ -229,7 +199,7 @@ public class Player_BattleLogic : MonoBehaviour
         if (arrowMovement != null)
         {
             arrowMovement.Direction = attackDirection;
-            arrowMovement.Damage = player.Damage; // 传入该发出箭矢的玩家对象引用，方便访问该玩家的属性
+            arrowMovement.Damage = player.damage; // 传入该发出箭矢的玩家对象引用，方便访问该玩家的属性
         }
         else
         {
@@ -251,7 +221,7 @@ public class Player_BattleLogic : MonoBehaviour
         arrow.transform.rotation = Quaternion.identity; // 每次发射时重置箭矢旋转角度
         arrow.transform.right = attackDirection; // 每次发射时调整箭矢朝向攻击方向
         arrow.Direction = attackDirection; // 每次发射时重置箭矢方向 
-        arrow.Damage = player.Damage; // 每次发射时重置箭矢伤害值（如果玩家的伤害属性发生了变化）
+        arrow.Damage = player.damage; // 每次发射时重置箭矢伤害值（如果玩家的伤害属性发生了变化）
         
     }
 
@@ -277,19 +247,19 @@ public class Player_BattleLogic : MonoBehaviour
     //激活近战攻击点（根据当前攻击类型）
     private void Active_AttackPoint()
     {
-        switch (player.CurrentAttackType)
+        switch (playerState.CurrentAttackType)
         {
             case Player_PropertyManager.AttackType.Attack_Horizontal:
                 // 水平攻击逻辑
-                AttackPoint_Horizontal.gameObject.SetActive(true);
+                attackPoint_Horizontal.gameObject.SetActive(true);
                 break;
             case Player_PropertyManager.AttackType.Attack_Up:
                 // 向上攻击逻辑
-                AttackPoint_Up.gameObject.SetActive(true);
+                attackPoint_Up.gameObject.SetActive(true);
                 break;
             case Player_PropertyManager.AttackType.Attack_Down:
                 // 向下攻击逻辑
-                AttackPoint_Down.gameObject.SetActive(true);
+                attackPoint_Down.gameObject.SetActive(true);
                 break;
         }
     }
@@ -309,15 +279,15 @@ public class Player_BattleLogic : MonoBehaviour
     public void AttackEnd()
     {
         // 攻击结束时，关闭所有攻击点
-        AttackPoint_Horizontal.gameObject.SetActive(false);
-        AttackPoint_Up.gameObject.SetActive(false);
-        AttackPoint_Down.gameObject.SetActive(false);
+        attackPoint_Horizontal.gameObject.SetActive(false);
+        attackPoint_Up.gameObject.SetActive(false);
+        attackPoint_Down.gameObject.SetActive(false);
 
-        player.CanChangeState = true;// 解除状态锁定，允许再次切换状态
-        player.CanChangeAttackType = true; // 同时解锁攻击类型切换
-        player.CanAttack = false;// 射击结束后，设置CanAttack为false，防止在射击过程中再次攻击
+        playerState.CanChangeState = true;// 解除状态锁定，允许再次切换状态
+        playerState.CanChangeAttackType = true; // 同时解锁攻击类型切换
+        playerState.CanAttack = false;// 射击结束后，设置CanAttack为false，防止在射击过程中再次攻击
 
-        AttackIntervalTimer.enabled = true;// 攻击间隔定时器重新启用，准备下一次攻击
+        attackIntervalTimer.enabled = true;// 攻击间隔定时器重新启用，准备下一次攻击
     }
 
 
@@ -328,21 +298,21 @@ public class Player_BattleLogic : MonoBehaviour
     {
         OutShootArrow(); // 生成箭矢并发射
 
-        player.CanChangeState = true;// 解除状态锁定，允许再次切换状态
-        player.CanChangeAttackType = true; // 同时解锁攻击类型切换
-        player.CanAttack = false;// 射击结束后，设置CanAttack为false，防止在射击过程中再次攻击
+        playerState.CanChangeState = true;// 解除状态锁定，允许再次切换状态
+        playerState.CanChangeAttackType = true; // 同时解锁攻击类型切换
+        playerState.CanAttack = false;// 射击结束后，设置CanAttack为false，防止在射击过程中再次攻击
 
 
-        AttackIntervalTimer.enabled = true;// 攻击间隔定时器重新启用，准备下一次攻击
+        attackIntervalTimer.enabled = true;// 攻击间隔定时器重新启用，准备下一次攻击
     }
 
     /// <summary>
-    /// Player受到伤害时调用，减少生命值
+    /// Player受伤害的Action
     /// </summary>
     /// <param name="amount">伤害值</param>
-    public void TakeDamage(float amount)
+    public void TakeDamage()
     {
-        player.CurrentHealth -= amount;
+        // 玩家受到伤害时，播放受伤害动画
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.DOColor(Color.red, 0.1f).OnComplete(() => spriteRenderer.DOColor(Color.white, 0.1f));
     }

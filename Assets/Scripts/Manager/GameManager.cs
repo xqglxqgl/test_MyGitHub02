@@ -4,8 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
-
+    public static GameManager Instance;
     public enum Difficulty
     {
         Easy,
@@ -14,11 +13,12 @@ public class GameManager : MonoBehaviour
     }
     public Difficulty currentDifficulty;
 
+    public Player player;
+
     [Header("Game Events")]
     public UnityAction onGameStarted;
-    //public GameEvent onGamePaused;
-    //public GameEvent onGameResumed;
-    //public GameEvent onGameOver;
+    public UnityAction onGameOver;
+    public UnityAction onPlayerTakeDamage;
     public UnityAction<GameObject> onPlayerSpawned;
 
     [Header("Settings")]
@@ -26,16 +26,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
+        Instance = this;
     }
 
 
@@ -52,12 +43,31 @@ public class GameManager : MonoBehaviour
 
 
 
-    // 生成玩家
+    /// <summary>
+    /// 生成玩家
+    /// </summary>
+    /// <param name="playerPrefab"></param>
+    /// <param name="position"></param>
     public void SpawnPlayer(GameObject playerPrefab, Vector3 position)
     {
         GameObject player = Instantiate(playerPrefab, position, Quaternion.identity);
         onPlayerSpawned?.Invoke(player);
     }
 
+
+    /// <summary>
+    /// 玩家受到伤害
+    /// </summary>
+    /// <param name="damage"></param>
+    public void PlayerTakeDamage(float damage)
+    {
+        player.currentHealth -= damage;
+        onPlayerTakeDamage?.Invoke();
+
+        if(player.currentHealth <= 0)//玩家如果死亡,游戏结束
+        {
+            onGameOver?.Invoke();
+        }
+    }
     
 }

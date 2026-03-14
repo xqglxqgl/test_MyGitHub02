@@ -46,8 +46,7 @@ public class ArrowMovement02 : MonoBehaviour
             Pool.Release(this); // 返回对象池
 
             // 对Player造成伤害
-            Player_BattleLogic playerBattleLogic = collision.GetComponent<Player_BattleLogic>();
-            playerBattleLogic.TakeDamage(Damage);
+            GameManager.Instance.PlayerTakeDamage(Damage);// 调用GameManager的方法处理伤害,广播Action
         }
     }
 }

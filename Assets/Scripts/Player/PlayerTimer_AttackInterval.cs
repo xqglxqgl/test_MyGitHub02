@@ -4,27 +4,21 @@ using UnityEngine;
 
 public class PlayerTimer_AttackInterval : MonoBehaviour, ITimerUser
 {
-    private Player_PropertyManager Player;
     
     private float nextAttackTime;
     private bool isActive = false;
+    private Player player;
+    [SerializeField]private Player_PropertyManager playerState;
     
 
     void Awake()
     {
-        // 在自身查找 Player_PropertyManager 组件
-        Player = GetComponent<Player_PropertyManager>();
-        if (Player == null)
-        {
-            Debug.LogError("Player_BattleLogic 无法找到 Player_PropertyManager 组件，请检查挂载位置。");
-            enabled = false;
-            return;
-        } 
+        player = GameManager.Instance.player;
     }
     void OnEnable()
     {
         isActive = true;
-        nextAttackTime = Time.time + Player.AttackInterval;
+        nextAttackTime = Time.time + player.attackInterval;
         TimeManager.Instance.RegisterTimer(this);
     }
 
@@ -42,8 +36,8 @@ public class PlayerTimer_AttackInterval : MonoBehaviour, ITimerUser
         
         if (currentTime >= nextAttackTime)
         {
-            nextAttackTime = currentTime + Player.AttackInterval;
-            Player.CanAttack = true;
+            nextAttackTime = currentTime + player.attackInterval;
+            playerState.CanAttack = true;
             this.enabled = false;
         }
     }
