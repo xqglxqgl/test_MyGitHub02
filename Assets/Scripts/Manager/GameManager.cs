@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public UnityAction onGameStarted;
     public UnityAction onGameOver;
     public UnityAction onPlayerTakeDamage;
+    public UnityAction onPlayerHpLow;
     public UnityAction<GameObject> onPlayerSpawned;
 
     [Header("Settings")]
@@ -67,6 +68,10 @@ public class GameManager : MonoBehaviour
         if(player.currentHealth <= 0)//玩家如果死亡,游戏结束
         {
             onGameOver?.Invoke();
+        }
+        if(player.currentHealth <= player.maxHealth * 0.3f)//玩家血量低于30%时,触发玩家 低血量事件
+        {
+            onPlayerHpLow?.Invoke();
         }
     }
     

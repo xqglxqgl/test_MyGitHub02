@@ -19,5 +19,5 @@ MonoBehaviour:
   attackSpeedLevel: 1
   attackInterval: 1
   maxHealth: 100
-  currentHealth: 97
+  currentHealth: 30
   profession: 1
