@@ -38,10 +38,7 @@ public class GoblinCreater : MonoBehaviour
 
     private GameObject CreateObj()
     {
-        //初始化位置
-        float angle = Random.Range(0f, 360f);
-        float distance = Random.Range(innerRadius, outerRadius);
-        spawnPosition = (Vector2)transform.position + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * distance;
+        InitPosRandom(); 
 
         GameObject obj = Instantiate(prefabSpawn,spawnPosition,Quaternion.identity);
 
@@ -51,10 +48,7 @@ public class GoblinCreater : MonoBehaviour
     }
     private void OnGetObj(GameObject obj)
     {   
-        //初始化位置
-        float angle = Random.Range(0f, 360f);
-        float distance = Random.Range(innerRadius, outerRadius);
-        spawnPosition = (Vector2)transform.position + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * distance;
+        InitPosRandom(); 
         obj.transform.position = spawnPosition;
 
         obj.gameObject.SetActive(true);
@@ -83,5 +77,13 @@ public class GoblinCreater : MonoBehaviour
     private void OnDie(GameObject obj)
     {
         objPool.Release(obj);//归还到对象池
+    }
+
+    //根据生成范围随机初始化生成位置
+    private void InitPosRandom()
+    {
+        float angle = Random.Range(0f, 360f);
+        float distance = Random.Range(innerRadius, outerRadius);
+        spawnPosition = (Vector2)transform.position + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * distance;
     }
 }
