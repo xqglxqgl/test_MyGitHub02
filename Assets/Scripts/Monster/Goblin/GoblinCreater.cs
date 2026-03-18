@@ -54,6 +54,7 @@ public class GoblinCreater : MonoBehaviour
         //初始化位置
         float angle = Random.Range(0f, 360f);
         float distance = Random.Range(innerRadius, outerRadius);
+        spawnPosition = (Vector2)transform.position + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * distance;
         obj.transform.position = spawnPosition;
 
         obj.gameObject.SetActive(true);
