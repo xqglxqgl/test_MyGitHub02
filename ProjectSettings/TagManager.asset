@@ -5,14 +5,17 @@ TagManager:
   serializedVersion: 2
   tags:
   - Monster
+  - Archer
+  - Goblin
+  - Monk
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Monster
   - Water
   - UI
-  - 
+  - Player
   - 
   - 
   - 

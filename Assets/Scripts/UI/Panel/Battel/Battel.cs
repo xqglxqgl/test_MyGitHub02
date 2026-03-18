@@ -11,10 +11,11 @@ public class Battel : MonoBehaviour
 
     [SerializeField] private Transform avatar;
 
+    private float currentHp;
+    private float maxHp;
+
     void Start()
     {
-        //玩家血条填充更新
-        hpBarFill.DOScaleX(GameManager.Instance.player.currentHealth/GameManager.Instance.player.maxHealth,0.1f);
         //订阅玩家受到 伤害事件
         GameManager.Instance.onPlayerTakeDamage += OnPlayerTakeDamage;
         //订阅玩家 低血量事件
@@ -30,7 +31,9 @@ public class Battel : MonoBehaviour
         });
 
         // 玩家受到伤害时,血条填充更新
-        hpBarFill.DOScaleX(GameManager.Instance.player.currentHealth/GameManager.Instance.player.maxHealth,0.1f);
+        currentHp = GameManager.Instance.playerStatus.CurrentHealth;
+        maxHp = GameManager.Instance.playerStatus.playerProperty.maxHealth;
+        hpBarFill.DOScaleX(currentHp/maxHp,0.1f);
 
     }
 
@@ -43,7 +46,10 @@ public class Battel : MonoBehaviour
     {
         Image sprite = avatar.GetComponent<Image>();
         float waitForSeconds = 1f;
-        while (GameManager.Instance.player.currentHealth/GameManager.Instance.player.maxHealth < 0.3f)  // 协程中的while(true)是安全的
+
+        currentHp = GameManager.Instance.playerStatus.CurrentHealth;
+        maxHp = GameManager.Instance.playerStatus.playerProperty.maxHealth;
+        if (currentHp/maxHp < 0.3f)  // 协程中的while(true)是安全的
         {
             
             sprite.DOColor(Color.red, 0.5f).OnComplete(()=>

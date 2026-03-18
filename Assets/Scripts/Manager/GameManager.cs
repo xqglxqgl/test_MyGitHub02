@@ -7,20 +7,23 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public enum Difficulty
     {
-        Easy,
+        Eazy,
         Normal,
         Hard,
     }
     public Difficulty currentDifficulty;
+    public PlayerStatus playerStatus;
 
-    public Player player;
-
-    [Header("Game Events")]
+    [Header("游戏主事件")]
     public UnityAction onGameStarted;
     public UnityAction onGameOver;
+
+    [Header("玩家事件")]
+    public UnityAction<GameObject> onPlayerSpawned;
     public UnityAction onPlayerTakeDamage;
     public UnityAction onPlayerHpLow;
-    public UnityAction<GameObject> onPlayerSpawned;
+
+
 
     [Header("Settings")]
     public bool isPaused = false;
@@ -32,7 +35,7 @@ public class GameManager : MonoBehaviour
 
 
     void Start()
-    { 
+    {
         // 触发游戏开始事件
         onGameStarted?.Invoke();
     }
@@ -41,38 +44,38 @@ public class GameManager : MonoBehaviour
     {
     }
 
-
-
-
     /// <summary>
     /// 生成玩家
     /// </summary>
     /// <param name="playerPrefab"></param>
     /// <param name="position"></param>
-    public void SpawnPlayer(GameObject playerPrefab, Vector3 position)
+    public void OnPlayerSpawned(GameObject playerPrefab, Vector3 position)
     {
         GameObject player = Instantiate(playerPrefab, position, Quaternion.identity);
+        playerStatus = player.GetComponent<PlayerStatus>();
         onPlayerSpawned?.Invoke(player);
     }
+
 
 
     /// <summary>
     /// 玩家受到伤害
     /// </summary>
-    /// <param name="damage"></param>
-    public void PlayerTakeDamage(float damage)
+    public void OnPlayerTakeDamage(float damage)
     {
-        player.currentHealth -= damage;
+        // 减少玩家生命值
+        playerStatus.CurrentHealth -= damage;
         onPlayerTakeDamage?.Invoke();
-
-        if(player.currentHealth <= 0)//玩家如果死亡,游戏结束
-        {
-            onGameOver?.Invoke();
-        }
-        if(player.currentHealth <= player.maxHealth * 0.3f)//玩家血量低于30%时,触发玩家 低血量事件
-        {
-            onPlayerHpLow?.Invoke();
-        }
     }
+
+    /// <summary>
+    /// 玩家血量低
+    /// </summary>
+    public void OnPlayerHpLow()
+    {
+        onPlayerHpLow?.Invoke();
+    }
+
+
     
 }

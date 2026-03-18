@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:yousandi.cn,2023:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d702ce9bd87fe8144845c4f727f7be10, type: 3}
+  m_Name: Archer
+  m_EditorClassIdentifier: 
+  level: 1
+  damage: 10
+  moveSpeed: 1
+  attackRange: 4
+  detectionRange: 0
+  attackSpeedLevel: 1
+  attackInterval: 1.5
+  maxHealth: 100
+  profession: 1

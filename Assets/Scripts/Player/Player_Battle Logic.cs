@@ -6,26 +6,36 @@ using UnityEngine.Pool;
 
 public class Player_BattleLogic : MonoBehaviour
 {
-    private Vector2 attackDirection;    // 当前目标方向，用于决定动画
 
     [Header("外部组件引用")]
     [SerializeField] private Transform attackPoint_Horizontal;
     [SerializeField] private Transform attackPoint_Up ;
     [SerializeField] private Transform attackPoint_Down ;
     [SerializeField] private GameObject arrowPrefab;     // 箭矢预制体引用
-    private Player player;
    
 
 
     [Header("自身组件引用")]
-    [SerializeField] private Player_PropertyManager playerState;
+    [SerializeField] private PlayerStatus playerStatus;
     [SerializeField] private Animator animator;
     [SerializeField] private PlayerTimer_AttackInterval attackIntervalTimer;// 攻击间隔定时器组件
+    [SerializeField] private AutoLockSystem_WithCursor autoLockSystem;// 自动锁定系统组件
 
+    private PlayerProperty playerProperty;// 玩家基础属性
     private IObjectPool<ArrowMovement> arrowPool;// 箭矢对象池
+    private Transform currentTarget; // 当前目标敌人，用于锁定和攻击
+    private Vector2 attackDirection;    // 当前目标方向，用于决定动画
 
     void Awake()
     {
+        playerProperty = playerStatus.playerProperty;
+    }
+
+    void Start()
+    {
+        GameManager.Instance.onPlayerTakeDamage += OnTakeDamage;// 订阅玩家受到伤害事件
+        autoLockSystem.onLockTargetChange += OnLockTargetChange;// 订阅自动锁定系统目标改变事件
+
         // 创建箭矢对象池
         arrowPool = new ObjectPool<ArrowMovement>(
         createFunc: CreateArrow,           // 创建新对象的方法
@@ -37,39 +47,19 @@ public class Player_BattleLogic : MonoBehaviour
         maxSize: 50
         );
     }
-
-    void Start()
+    private void OnLockTargetChange(Transform newTarget)
     {
-        player = GameManager.Instance.player;
-
-        GameManager.Instance.onPlayerTakeDamage += TakeDamage;// 订阅玩家受到伤害事件
+        currentTarget = newTarget;
     }
+
 
     public void Judge_PlyaerCurrentState_AttackOrShoot()
     {
-        if(playerState.CanAttack == false)return;// 如果不能攻击，则直接返回
+        if(playerStatus.CurrentState == PlayerStatus.PlayerState.Attack)return;// 如果当前状态为攻击，则直接返回
 
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, player.attackRange);// 查找所有在攻击范围内的敌人
-        Transform closestEnemy = null;
-        float closestDistance = float.MaxValue;
-
-        foreach (var hit in hits)
+        if (currentTarget != null )
         {
-            if (hit.CompareTag("Monster"))
-            {
-                float distance = Vector2.Distance(transform.position, hit.transform.position);
-                if (distance < closestDistance)
-                {
-                    // 更新最近敌人和距离,锁定最近的敌人
-                    closestDistance = distance;
-                    closestEnemy = hit.transform;
-                }
-            }
-        }
-
-        if (closestEnemy != null )
-        {
-            attackDirection = (closestEnemy.position - transform.position).normalized;// 计算攻击方向并归一化
+            attackDirection = (currentTarget.position - transform.position).normalized;// 计算攻击方向并归一化
 
             // 根据敌人位置调整玩家水平朝向,使得玩家始终面向敌人
             if (attackDirection.x > 0)
@@ -77,80 +67,84 @@ public class Player_BattleLogic : MonoBehaviour
             else if (attackDirection.x < 0)
                 transform.localScale = new Vector3(-1, 1, 1); // 面向左
 
-            // 根据职业判断是进行攻击还是射击
-                // 弓箤手职业：使用射击状态
-            if (player.profession == Player.ProfessionType.Archer)
+            float distance = Vector2.Distance(transform.position, currentTarget.position);// 计算玩家与敌人的距离
+            if(distance <= playerProperty.attackRange)// 如果敌人在攻击范围内
             {
-                // 根据攻击方向判断进行射击的类型，并尝试切换到该射击类型
-                playerState.CurrentShootType = DetermineShootType();
+                // 根据职业判断是进行攻击还是射击
+                    // 弓箤手职业：使用射击状态
+                if (playerProperty.profession == PlayerProperty.ProfessionType.Archer)
+                {
+                    // 根据攻击方向判断进行射击的类型，并尝试切换到该射击类型
+                    playerStatus.CurrentShootType = DetermineShootType();
 
-                // 切换到 Shoot 状态
-                playerState.CurrentState = Player_PropertyManager.PlayerState.Shoot;
+                    // 切换到 Shoot 状态
+                    playerStatus.CurrentState = PlayerStatus.PlayerState.Shoot;
+                }
+
+                    // 战士职业：使用攻击状态
+                else if (playerProperty.profession == PlayerProperty.ProfessionType.Warrior)
+                {
+                    // 根据攻击方向判断进行进进行攻击的类型，并尝试切换到该攻击类型
+                    playerStatus.CurrentAttackType = DetermineAttackType();
+
+                    // 切换到 Attack 状态
+                    playerStatus.CurrentState = PlayerStatus.PlayerState.Attack;
+
+                } 
             }
-
-                // 战士职业：使用攻击状态
-            else if (player.profession == Player.ProfessionType.Warrior)
-            {
-                // 根据攻击方向判断进行进进行攻击的类型，并尝试切换到该攻击类型
-                playerState.CurrentAttackType = DetermineAttackType();
-
-                // 切换到 Attack 状态
-                playerState.CurrentState = Player_PropertyManager.PlayerState.Attack;
-
-            } 
         }
     }
 
     /// <summary>
     /// 根据攻击方向判断进行进进行攻击的类型
     /// </summary>
-    private Player_PropertyManager.AttackType DetermineAttackType()
+    private PlayerStatus.AttackType DetermineAttackType()
     {
         if (Mathf.Abs(attackDirection.x) > Mathf.Abs(attackDirection.y))
         {
-            return Player_PropertyManager.AttackType.Attack_Horizontal;
+            return PlayerStatus.AttackType.Attack_Horizontal;
         }
         else if (attackDirection.y > 0)
         {
-            return Player_PropertyManager.AttackType.Attack_Up;
+            return PlayerStatus.AttackType.Attack_Up;
         }
         else
         {
-            return Player_PropertyManager.AttackType.Attack_Down;
+            return PlayerStatus.AttackType.Attack_Down;
         }
     }
 
     /// <summary>
     /// 根据射击方向判断进行射击的类型
     /// </summary>
-    private Player_PropertyManager.ShootType DetermineShootType()
+    private PlayerStatus.ShootType DetermineShootType()
     {
         if (Mathf.Abs(attackDirection.x) > Mathf.Abs(attackDirection.y))
         {   
-            return Player_PropertyManager.ShootType.Shoot_Horizontal;
+            return PlayerStatus.ShootType.Shoot_Horizontal;
         }
         else if (attackDirection.y > 0)
         {
-            return (Mathf.Abs(attackDirection.x) > 0.3f) ? Player_PropertyManager.ShootType.Shoot_Diagonal_Up : Player_PropertyManager.ShootType.Shoot_Up;
+            return (Mathf.Abs(attackDirection.x) > 0.3f) ? PlayerStatus.ShootType.Shoot_Diagonal_Up : PlayerStatus.ShootType.Shoot_Up;
         }
         else
         {
-            return (Mathf.Abs(attackDirection.x) > 0.3f) ? Player_PropertyManager.ShootType.Shoot_Diagonal_Down : Player_PropertyManager.ShootType.Shoot_Down;
+            return (Mathf.Abs(attackDirection.x) > 0.3f) ? PlayerStatus.ShootType.Shoot_Diagonal_Down : PlayerStatus.ShootType.Shoot_Down;
         }
     }
 
     public void PlayMeleeAttackAnimation()
     {
 
-        switch (playerState.CurrentAttackType)
+        switch (playerStatus.CurrentAttackType)
         {
-            case Player_PropertyManager.AttackType.Attack_Horizontal:
+            case PlayerStatus.AttackType.Attack_Horizontal:
                 animator.Play("Attack_Horizontal");
                 break;
-            case Player_PropertyManager.AttackType.Attack_Up:
+            case PlayerStatus.AttackType.Attack_Up:
                 animator.Play("Attack_Up");
                 break;
-            case Player_PropertyManager.AttackType.Attack_Down:
+            case PlayerStatus.AttackType.Attack_Down:
                 animator.Play("Attack_Down");
                 break;
         }
@@ -159,21 +153,21 @@ public class Player_BattleLogic : MonoBehaviour
     public void PlayShootAnimation()
     {
 
-        switch (playerState.CurrentShootType)
+        switch (playerStatus.CurrentShootType)
         {
-            case Player_PropertyManager.ShootType.Shoot_Horizontal:
+            case PlayerStatus.ShootType.Shoot_Horizontal:
                 animator.Play("Shoot_Horizontal");
                 break;
-            case Player_PropertyManager.ShootType.Shoot_Up:
+            case PlayerStatus.ShootType.Shoot_Up:
                 animator.Play("Shoot_Up");
                 break;
-            case Player_PropertyManager.ShootType.Shoot_Down:
+            case PlayerStatus.ShootType.Shoot_Down:
                 animator.Play("Shoot_Down");
                 break;
-            case Player_PropertyManager.ShootType.Shoot_Diagonal_Up:
+            case PlayerStatus.ShootType.Shoot_Diagonal_Up:
                 animator.Play("Shoot_Diagonal_Up");
                 break;
-            case Player_PropertyManager.ShootType.Shoot_Diagonal_Down:
+            case PlayerStatus.ShootType.Shoot_Diagonal_Down:
                 animator.Play("Shoot_Diagonal_Down");
                 break;
         }
@@ -199,7 +193,7 @@ public class Player_BattleLogic : MonoBehaviour
         if (arrowMovement != null)
         {
             arrowMovement.Direction = attackDirection;
-            arrowMovement.Damage = player.damage; // 传入该发出箭矢的玩家对象引用，方便访问该玩家的属性
+            arrowMovement.Damage = playerProperty.damage; // 传入该发出箭矢的玩家对象引用，方便访问该玩家的属性
         }
         else
         {
@@ -216,13 +210,13 @@ public class Player_BattleLogic : MonoBehaviour
 
     private void OnGetArrow(ArrowMovement arrow)
     {
-        arrow.gameObject.SetActive(true);
         arrow.transform.position = transform.position + new Vector3(-0.011f, -0.118f, -1f); // 每次发射时重置箭矢位置
         arrow.transform.rotation = Quaternion.identity; // 每次发射时重置箭矢旋转角度
         arrow.transform.right = attackDirection; // 每次发射时调整箭矢朝向攻击方向
         arrow.Direction = attackDirection; // 每次发射时重置箭矢方向 
-        arrow.Damage = player.damage; // 每次发射时重置箭矢伤害值（如果玩家的伤害属性发生了变化）
-        
+        arrow.Damage = playerProperty.damage; // 每次发射时重置箭矢伤害值（如果玩家的伤害属性发生了变化） 
+        arrow.gameObject.SetActive(true);
+
     }
 
 
@@ -247,17 +241,17 @@ public class Player_BattleLogic : MonoBehaviour
     //激活近战攻击点（根据当前攻击类型）
     private void Active_AttackPoint()
     {
-        switch (playerState.CurrentAttackType)
+        switch (playerStatus.CurrentAttackType)
         {
-            case Player_PropertyManager.AttackType.Attack_Horizontal:
+            case PlayerStatus.AttackType.Attack_Horizontal:
                 // 水平攻击逻辑
                 attackPoint_Horizontal.gameObject.SetActive(true);
                 break;
-            case Player_PropertyManager.AttackType.Attack_Up:
+            case PlayerStatus.AttackType.Attack_Up:
                 // 向上攻击逻辑
                 attackPoint_Up.gameObject.SetActive(true);
                 break;
-            case Player_PropertyManager.AttackType.Attack_Down:
+            case PlayerStatus.AttackType.Attack_Down:
                 // 向下攻击逻辑
                 attackPoint_Down.gameObject.SetActive(true);
                 break;
@@ -283,9 +277,9 @@ public class Player_BattleLogic : MonoBehaviour
         attackPoint_Up.gameObject.SetActive(false);
         attackPoint_Down.gameObject.SetActive(false);
 
-        playerState.CanChangeState = true;// 解除状态锁定，允许再次切换状态
-        playerState.CanChangeAttackType = true; // 同时解锁攻击类型切换
-        playerState.CanAttack = false;// 射击结束后，设置CanAttack为false，防止在射击过程中再次攻击
+        playerStatus.CanChangeState = true;// 解除状态锁定，允许再次切换状态
+        playerStatus.CanChangeAttackType = true; // 同时解锁攻击类型切换
+        playerStatus.CanAttack = false;// 射击结束后，设置CanAttack为false，防止在射击过程中再次攻击
 
         attackIntervalTimer.enabled = true;// 攻击间隔定时器重新启用，准备下一次攻击
     }
@@ -298,9 +292,9 @@ public class Player_BattleLogic : MonoBehaviour
     {
         OutShootArrow(); // 生成箭矢并发射
 
-        playerState.CanChangeState = true;// 解除状态锁定，允许再次切换状态
-        playerState.CanChangeAttackType = true; // 同时解锁攻击类型切换
-        playerState.CanAttack = false;// 射击结束后，设置CanAttack为false，防止在射击过程中再次攻击
+        playerStatus.CanChangeState = true;// 解除状态锁定，允许再次切换状态
+        playerStatus.CanChangeAttackType = true; // 同时解锁攻击类型切换
+        playerStatus.CanAttack = false;// 射击结束后，设置CanAttack为false，防止在射击过程中再次攻击
 
 
         attackIntervalTimer.enabled = true;// 攻击间隔定时器重新启用，准备下一次攻击
@@ -309,10 +303,9 @@ public class Player_BattleLogic : MonoBehaviour
     /// <summary>
     /// Player受伤害的Action
     /// </summary>
-    /// <param name="amount">伤害值</param>
-    public void TakeDamage()
+    public void OnTakeDamage()
     {
-        // 玩家受到伤害时，播放受伤害动画
+        // 播放受伤害动画
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.DOColor(Color.red, 0.1f).OnComplete(() => spriteRenderer.DOColor(Color.white, 0.1f));
     }

@@ -11,10 +11,15 @@ public class ArrowMovement02 : MonoBehaviour
     private float timer;
 
     //箭矢属性
-    public float Speed { get; set; } = 3f; // 箭矢速度
+    private float speed = 3f; // 箭矢速度
     public float Damage { get; set; } // 箭矢伤害
     public Vector2 Direction{ get; set; }// 飞行方向
     public IObjectPool<ArrowMovement02> Pool { get; set; }// 箭矢对象池引用
+
+    void Start()
+    {
+        
+    }
 
     void OnEnable()
     {
@@ -34,19 +39,19 @@ public class ArrowMovement02 : MonoBehaviour
     void FixedUpdate()
     {
         // 移动箭矢
-        transform.Translate(Direction * Speed * Time.fixedDeltaTime, Space.World);
+        transform.Translate(Direction * speed * Time.fixedDeltaTime, Space.World);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         
         // 当箭矢碰撞到Player时，销毁箭矢并对Player造成伤害
-        if (collision.CompareTag("Player"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             Pool.Release(this); // 返回对象池
 
             // 对Player造成伤害
-            GameManager.Instance.PlayerTakeDamage(Damage);// 调用GameManager的方法处理伤害,广播Action
+            GameManager.Instance.OnPlayerTakeDamage(Damage);// 调用GameManager的方法处理伤害,广播Action
         }
     }
 }

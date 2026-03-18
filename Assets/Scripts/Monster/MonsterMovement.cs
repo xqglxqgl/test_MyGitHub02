@@ -4,35 +4,37 @@ using UnityEngine;
 
 public class MonsterMovement : MonoBehaviour
 {
-    private Rigidbody2D rb;
-    private Monster_PropertyManager monsterPropertyManager; // 引用属性管理器
-    private Monster_BattleLogic monsterBattleLogic; // 引用战斗逻辑
+    
+
+    [Header("内部组件引用")]
+    [SerializeField]private AutoLockSystem autoLockSystem; // 自动锁定系统组件
+    [SerializeField]private MonsterStatus monsterStatus; // 引用属性管理器
+    [SerializeField]private Monster_BattleLogic monsterBattleLogic; // 引用战斗逻辑
+    [SerializeField]private Rigidbody2D rb;
+
+    private Transform playerTransform; 
 
     void Awake()
     {
-        // 获取必要的组件引用
-        rb = GetComponent<Rigidbody2D>();
-        monsterPropertyManager = GetComponent<Monster_PropertyManager>();
-        monsterBattleLogic = GetComponent<Monster_BattleLogic>();// 获取战斗逻辑组件引用
-
+        autoLockSystem.onLockTargetChange += UpdateTarget; // 订阅锁定事件
     }
 
     void Update()
     {
         monsterBattleLogic.JudgeMonsterState(); // 判断monster应该处于什么状态
 
-        switch (monsterPropertyManager.CurrentState)// 根据当前状态播放对应动画
+        switch (monsterStatus.CurrentState)// 根据当前状态播放对应动画
         {
-            case Monster_PropertyManager.MonsterState.Idle:
+            case MonsterStatus.MonsterState.Idle:
                 monsterBattleLogic.PlayIdleAnimation();
                 break;
-            case Monster_PropertyManager.MonsterState.Run:
+            case MonsterStatus.MonsterState.Run:
                 monsterBattleLogic.PlayRunAnimation();
                 break;
-            case Monster_PropertyManager.MonsterState.Attack:
+            case MonsterStatus.MonsterState.Attack:
                 monsterBattleLogic.PlayAttackAnimation();
                 break;
-            case Monster_PropertyManager.MonsterState.Shoot:
+            case MonsterStatus.MonsterState.Shoot:
                 monsterBattleLogic.PlayShootAnimation();
                 break;
         }
@@ -42,12 +44,17 @@ public class MonsterMovement : MonoBehaviour
         MoveTowardsPlayer();
     }
 
+    private void UpdateTarget(Transform target)
+    {
+        playerTransform = target;
+    }
+
     private void MoveTowardsPlayer()
     {
         // 只有在 Run 状态下才移动
-        if (monsterPropertyManager.CurrentState == Monster_PropertyManager.MonsterState.Run)
+        if (monsterStatus.CurrentState == MonsterStatus.MonsterState.Run)
         {
-            Vector2 direction = (monsterBattleLogic.playerTransform.position - transform.position).normalized;
+            Vector2 direction = (playerTransform.position - transform.position).normalized;
 
             // 根据移动方向调整怪物朝向
             Vector3 currentScale = transform.localScale;
@@ -64,7 +71,7 @@ public class MonsterMovement : MonoBehaviour
             transform.localScale = currentScale;
 
             // 使用 Rigidbody 进行物理移动
-            rb.MovePosition(rb.position + direction * monsterPropertyManager.MoveSpeed * Time.fixedDeltaTime);
+            rb.MovePosition(rb.position + direction * monsterStatus.monsterProperty.moveSpeed * Time.fixedDeltaTime);
         }
     }
 }

@@ -101,6 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9f70bdc5746b55439c21e87597fca37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStatus: {fileID: 3082498765851409033}
 --- !u!1 &4976756754000494906
 GameObject:
   m_ObjectHideFlags: 0
@@ -199,6 +200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9f70bdc5746b55439c21e87597fca37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStatus: {fileID: 3082498765851409033}
 --- !u!1 &7345592056510214278
 GameObject:
   m_ObjectHideFlags: 0
@@ -300,6 +302,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9f70bdc5746b55439c21e87597fca37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStatus: {fileID: 3082498765851409033}
 --- !u!1 &8995970087377964242
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,7 +320,8 @@ GameObject:
   - component: {fileID: 3082498765851409033}
   - component: {fileID: 8181701883135306416}
   - component: {fileID: 3556436134230190082}
-  m_Layer: 0
+  - component: {fileID: 7934466976301008697}
+  m_Layer: 6
   m_HasEditorInfo: 1
   m_Name: Player_Warrior
   m_TagString: Player
@@ -512,6 +516,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 321c089d379b8874b9981456446fc241, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerProperty: {fileID: 11400000, guid: a4e7171ebecd9bd4db8f74f2e0cedb33, type: 2}
 --- !u!114 &8181701883135306416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -528,9 +533,10 @@ MonoBehaviour:
   attackPoint_Up: {fileID: 8824464311820576363}
   attackPoint_Down: {fileID: 4356560386678996397}
   arrowPrefab: {fileID: 3826267878069399010, guid: 4e6c77d667528984aa9f5c30f387f632, type: 3}
-  playerState: {fileID: 3082498765851409033}
+  playerStatus: {fileID: 3082498765851409033}
   animator: {fileID: 1206380687508339245}
   attackIntervalTimer: {fileID: 3556436134230190082}
+  autoLockSystem: {fileID: 7934466976301008697}
 --- !u!114 &3556436134230190082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -544,3 +550,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerState: {fileID: 3082498765851409033}
+--- !u!114 &7934466976301008697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8995970087377964242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 746012d3f2642e54389769c8a4e0181c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lockRange: 6
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  checkInterval: 0.1
+  cursorLeftUp: {fileID: 0}
+  cursorRightUp: {fileID: 0}
+  cursorLeftDown: {fileID: 0}
+  cursorRightDown: {fileID: 0}

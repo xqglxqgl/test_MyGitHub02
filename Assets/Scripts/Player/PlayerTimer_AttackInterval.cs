@@ -7,18 +7,20 @@ public class PlayerTimer_AttackInterval : MonoBehaviour, ITimerUser
     
     private float nextAttackTime;
     private bool isActive = false;
-    private Player player;
-    [SerializeField]private Player_PropertyManager playerState;
+    [Header("自身组件引用")]
+    [SerializeField]private PlayerStatus playerState;
+
+    private float attackInterval;
     
 
     void Awake()
     {
-        player = GameManager.Instance.player;
+        attackInterval = playerState.playerProperty.attackInterval;
     }
     void OnEnable()
     {
         isActive = true;
-        nextAttackTime = Time.time + player.attackInterval;
+        nextAttackTime = Time.time + attackInterval;
         TimeManager.Instance.RegisterTimer(this);
     }
 
@@ -36,7 +38,7 @@ public class PlayerTimer_AttackInterval : MonoBehaviour, ITimerUser
         
         if (currentTime >= nextAttackTime)
         {
-            nextAttackTime = currentTime + player.attackInterval;
+            nextAttackTime = currentTime + attackInterval;
             playerState.CanAttack = true;
             this.enabled = false;
         }

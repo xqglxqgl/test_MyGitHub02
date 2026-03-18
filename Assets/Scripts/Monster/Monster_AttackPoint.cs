@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class Monster_AttackPoint : MonoBehaviour
 {
-    [SerializeField] private Monster_PropertyManager monster;
+    [Header("怪物状态引用")]
+    [SerializeField] private MonsterStatus monsterStatus;
 
     private void Awake()
     {
@@ -17,10 +18,10 @@ public class Monster_AttackPoint : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // 检查碰撞对象的标签是否为 "Player"
-        if (collision.CompareTag("Player"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             // 对Player造成伤害
-            GameManager.Instance.PlayerTakeDamage(monster.Damage);// 调用GameManager的方法处理伤害,广播Action
+            GameManager.Instance.OnPlayerTakeDamage(monsterStatus.monsterProperty.damage);// 调用GameManager的方法处理伤害,广播Action
         }
     }
 }

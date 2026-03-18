@@ -10,7 +10,7 @@ public class ArrowMovement : MonoBehaviour
     private float timer;
 
     // 飞行参数
-    public float Speed { get; set; } = 10f; 
+    private float speed = 10f; 
     public Vector2 Direction{ get; set; }
     public float Damage{ get; set; } 
     
@@ -36,14 +36,14 @@ public class ArrowMovement : MonoBehaviour
     void FixedUpdate()
     {
         // 移动箭矢
-        transform.Translate(Direction * Speed * Time.fixedDeltaTime, Space.World);
+        transform.Translate(Direction * speed * Time.fixedDeltaTime, Space.World);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         
         // 当箭矢碰撞到怪物时，销毁箭矢并对怪物造成伤害
-        if (collision.CompareTag("Monster"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Monster"))
         {
             Pool.Release(this); // 将箭矢对象归还给对象池，而不是销毁
             // 对怪物造成伤害

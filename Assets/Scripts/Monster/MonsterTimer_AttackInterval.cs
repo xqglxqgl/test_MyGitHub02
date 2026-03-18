@@ -4,27 +4,23 @@ using UnityEngine;
 
 public class MonsterTimer_AttackInterval : MonoBehaviour,ITimerUser
 {
-    private Monster_PropertyManager monster;
+    [Header("内部组件引用")]
+    [SerializeField] private MonsterStatus monsterStatus;
     
     private float nextAttackTime;
     private bool isActive = false;
+
+    private float attackInterval;
     
 
     void Awake()
     {
-        // 在自身查找 Monster_PropertyManager 组件
-        monster = GetComponent<Monster_PropertyManager>();
-        if (monster == null)
-        {
-            Debug.LogError("MonsterTimer_AttackInterval 无法找到 Monster_PropertyManager 组件，请检查挂载位置。");
-            enabled = false;
-            return;
-        } 
+        attackInterval = monsterStatus.monsterProperty.attackInterval;
     }
     void OnEnable()
     {
         isActive = true;
-        nextAttackTime = Time.time + monster.AttackInterval;
+        nextAttackTime = Time.time + attackInterval;
         TimeManager.Instance.RegisterTimer(this);
     }
 
@@ -42,8 +38,8 @@ public class MonsterTimer_AttackInterval : MonoBehaviour,ITimerUser
         
         if (currentTime >= nextAttackTime)
         {
-            nextAttackTime = currentTime + monster.AttackInterval;
-            monster.CanAttack = true;
+            nextAttackTime = currentTime + attackInterval;
+            monsterStatus.CanAttack = true;
             this.enabled = false;
         }
     }
