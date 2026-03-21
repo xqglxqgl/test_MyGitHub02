@@ -20,7 +20,7 @@ public class ChoseArcher_BT : MonoBehaviour
 
     private void OnClickChoseArcher()
     {
-        GameManager.Instance.OnPlayerSpawned(archerPrefab,new Vector2(0, 0));
+        PlayerManager.instance.OnSpawned(archerPrefab,new Vector2(0, 0));
         choseArcher?.Invoke();
     }
 }

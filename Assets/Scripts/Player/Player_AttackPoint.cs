@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Player_AttackPoint : MonoBehaviour
 {
-    [Header("玩家状态引用")]
-    [SerializeField]private PlayerStatus playerStatus;
+    [Header("玩家属性引用")]
+    [SerializeField]private PropertyHandler propertyHandler;
 
 
     private void Start()
@@ -24,7 +24,7 @@ public class Player_AttackPoint : MonoBehaviour
             if (monster != null)
             {
                 // ...则调用其 TakeDamage 方法，并将玩家的伤害值作为参数传入。
-                monster.TakeDamage(playerStatus.playerProperty.damage);
+                monster.TakeDamage(propertyHandler.playerProperty.damage);
             }
         }
     }

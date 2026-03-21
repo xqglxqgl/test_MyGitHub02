@@ -21,7 +21,8 @@ public class Monster_AttackPoint : MonoBehaviour
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             // 对Player造成伤害
-            GameManager.Instance.OnPlayerTakeDamage(monsterStatus.monsterProperty.damage);// 调用GameManager的方法处理伤害,广播Action
+            PlayerManager.instance.OnTakeDamage(monsterStatus.monsterProperty.damage);
+            PlayerManager.instance.OnBeSlashed();
         }
     }
 }

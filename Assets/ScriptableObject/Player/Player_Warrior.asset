@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Player_Warrior
   m_EditorClassIdentifier: 
   level: 1
-  damage: 1
+  damage: 50
   moveSpeed: 4
   attackRange: 1.2
   attackSpeedLevel: 1
-  attackInterval: 1
-  maxHealth: 200
+  attackInterval: 2
+  maxHp: 500
   profession: 0

@@ -8,6 +8,8 @@ TagManager:
   - Archer
   - Goblin
   - Monk
+  - Player_Warrior
+  - Player_Archer
   layers:
   - Default
   - TransparentFX

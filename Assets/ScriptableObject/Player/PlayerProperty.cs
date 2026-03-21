@@ -20,7 +20,7 @@ public class PlayerProperty : ScriptableObject
     public float attackRange;
     public int attackSpeedLevel;
     public float attackInterval;
-    public float maxHealth;
+    public float maxHp = 100;
     public ProfessionType profession;
 }
     

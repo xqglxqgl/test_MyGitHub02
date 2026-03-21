@@ -48,10 +48,11 @@ public class ArrowMovement02 : MonoBehaviour
         // 当箭矢碰撞到Player时，销毁箭矢并对Player造成伤害
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            Pool.Release(this); // 返回对象池
-
             // 对Player造成伤害
-            GameManager.Instance.OnPlayerTakeDamage(Damage);// 调用GameManager的方法处理伤害,广播Action
+            PlayerManager.instance.OnTakeDamage(Damage);
+            PlayerManager.instance.OnBeShot();
+
+            Pool.Release(this); // 返回对象池
         }
     }
 }

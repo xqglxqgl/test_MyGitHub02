@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Pool;
 
 public class ArrowMovement : MonoBehaviour
@@ -11,10 +12,11 @@ public class ArrowMovement : MonoBehaviour
 
     // 飞行参数
     private float speed = 10f; 
-    public Vector2 Direction{ get; set; }
-    public float Damage{ get; set; } 
+    public Vector2 direction;
+    public float damage;
     
-    public IObjectPool<ArrowMovement> Pool{ get; set; } 
+
+    public UnityAction<GameObject> onRelease;
 
 
     void OnEnable()
@@ -28,15 +30,14 @@ public class ArrowMovement : MonoBehaviour
         timer += Time.deltaTime;
         if (timer >= lifetime)
         {
-            // 返回对象池（不是销毁）
-            Pool.Release(this);
+            onRelease?.Invoke(gameObject);// 将箭矢对象归还给对象池
         }
     }
 
     void FixedUpdate()
     {
         // 移动箭矢
-        transform.Translate(Direction * speed * Time.fixedDeltaTime, Space.World);
+        transform.Translate(direction * speed * Time.fixedDeltaTime, Space.World);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -45,10 +46,10 @@ public class ArrowMovement : MonoBehaviour
         // 当箭矢碰撞到怪物时，销毁箭矢并对怪物造成伤害
         if (collision.gameObject.layer == LayerMask.NameToLayer("Monster"))
         {
-            Pool.Release(this); // 将箭矢对象归还给对象池，而不是销毁
+            onRelease?.Invoke(gameObject); // 将箭矢对象归还给对象池
             // 对怪物造成伤害
             Monster_BattleLogic monsterBattleLogic = collision.GetComponent<Monster_BattleLogic>();
-            monsterBattleLogic.TakeDamage(Damage);
+            monsterBattleLogic.TakeDamage(damage);
         }
     }
 }

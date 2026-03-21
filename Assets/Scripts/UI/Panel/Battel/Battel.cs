@@ -3,26 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class Battel : MonoBehaviour
 {
     [SerializeField] private Transform hpBar;
     [SerializeField] private Transform hpBarFill;
 
-    [SerializeField] private Transform avatar;
+    [SerializeField] private Image avatar;
 
     private float currentHp;
     private float maxHp;
+    private bool isLow;
 
+
+    private float waitForSeconds = 1f;
+    private float lastFlashTime;
+
+    void Awake()
+    {
+        lastFlashTime = Time.time;
+    }
     void Start()
     {
-        //订阅玩家受到 伤害事件
-        GameManager.Instance.onPlayerTakeDamage += OnPlayerTakeDamage;
-        //订阅玩家 低血量事件
-        GameManager.Instance.onPlayerHpLow += OnPlayerHpLow;
+        PlayerManager.instance.onHpChanged += UpdateHp;
+        PlayerManager.instance.onHpIsLow += OnPlayerHpLow;
     }
 
-    private void OnPlayerTakeDamage()
+    void Update()
+    {
+        FlashingAvatar();
+        
+    }
+
+    private void UpdateHp(float currentHp, float maxHp)
     {
         // 玩家受到伤害时,血条缩放
         hpBar.DOScale(1.1f,0.1f).OnComplete(()=>
@@ -31,32 +45,31 @@ public class Battel : MonoBehaviour
         });
 
         // 玩家受到伤害时,血条填充更新
-        currentHp = GameManager.Instance.playerStatus.CurrentHealth;
-        maxHp = GameManager.Instance.playerStatus.playerProperty.maxHealth;
-        hpBarFill.DOScaleX(currentHp/maxHp,0.1f);
+        this.currentHp = currentHp;
+        this.maxHp = maxHp;
+        hpBarFill.DOScaleX(this.currentHp/this.maxHp,0.1f);
 
     }
 
-    private void OnPlayerHpLow()
+    private void OnPlayerHpLow(bool isLow)
     {
-        // 玩家血量低时,开始闪烁
-        StartCoroutine(FlashAvatar());
+        this.isLow = isLow;
     }
-    private IEnumerator FlashAvatar()
-    {
-        Image sprite = avatar.GetComponent<Image>();
-        float waitForSeconds = 1f;
 
-        currentHp = GameManager.Instance.playerStatus.CurrentHealth;
-        maxHp = GameManager.Instance.playerStatus.playerProperty.maxHealth;
-        if (currentHp/maxHp < 0.3f)  // 协程中的while(true)是安全的
+
+
+
+    private void FlashingAvatar()
+    {
+        if(isLow && Time.time - lastFlashTime >= waitForSeconds)
         {
-            
-            sprite.DOColor(Color.red, 0.5f).OnComplete(()=>
+            avatar.DOColor(Color.red, 0.5f).OnComplete(()=>
             {
-                sprite.DOColor(Color.white, 0.5f);
+                avatar.DOColor(Color.white, 0.5f).OnComplete(()=>
+                {
+                    lastFlashTime = Time.time;
+                });
             });
-            yield return new WaitForSeconds(waitForSeconds);  // 等待1秒
         }
     }
 }

@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
-        GameManager.Instance.onPlayerSpawned += FollowPlayer;// 订阅玩家生成事件
+        PlayerManager.instance.onSpawned += FollowPlayer;// 订阅玩家生成事件
     }
     public void FollowPlayer(GameObject Player)
     {

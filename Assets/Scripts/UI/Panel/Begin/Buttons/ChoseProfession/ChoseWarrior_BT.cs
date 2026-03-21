@@ -20,7 +20,7 @@ public class ChoseWarrior_BT : MonoBehaviour
 
     private void OnClickChoseWarrior()
     {
-        GameManager.Instance.OnPlayerSpawned(warriorPrefab,new Vector2(0, 0));
+        PlayerManager.instance.OnSpawned(warriorPrefab,new Vector2(0, 0));
         choseWarrior?.Invoke();
     }
 }

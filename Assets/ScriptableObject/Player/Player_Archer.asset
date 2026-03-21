@@ -18,5 +18,5 @@ MonoBehaviour:
   attackRange: 6
   attackSpeedLevel: 1
   attackInterval: 0.8
-  maxHealth: 100
+  maxHp: 200
   profession: 1
