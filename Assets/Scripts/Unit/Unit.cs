@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Unit : MonoBehaviour
@@ -32,4 +33,39 @@ public class Goblin : Unit
     {
         Debug.Log("实际的攻击逻辑-哥布林");
     }
+}
+
+public class UnitManager : MonoBehaviour
+{
+    private List<Unit> unitList;
+
+    public Unit CreatePlayer(Vector2 bornPos)
+    {
+        Unit player = default;
+        // 创建玩家
+        this.unitList.Add(player);
+        return player;
+    }
+
+    public Unit CreateEnemy(Vector2 bornPos)
+    {
+        Unit enemy = default;
+        // 创建敌人
+        this.unitList.Add(enemy);
+        return enemy;
+    }
+
+    public Unit GetClosestUnit(Vector2 position)
+    {
+        Unit closestUnit = default;
+        // 找的逻辑
+        foreach (Unit unit in this.unitList)
+        {
+            // 
+        }
+
+        return closestUnit;
+    }
+
+
 }
