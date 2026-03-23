@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -5,7 +6,7 @@ using UnityEngine;
 
 public class AttackPointController : MonoBehaviour
 {
-    private JudgeState_ForPlayerWar.AttackType attackType;
+    private Enum attackType;
 
     [Header("攻击点")]
     [SerializeField]private GameObject attackPoint_Horizontal;
@@ -17,7 +18,7 @@ public class AttackPointController : MonoBehaviour
         PlayerManager.instance.onAttack += UpdateAttackType;
     }
 
-    private void UpdateAttackType(JudgeState_ForPlayerWar.AttackType attackType)
+    private void UpdateAttackType(Enum attackType)
     {
         this.attackType = attackType;
     }

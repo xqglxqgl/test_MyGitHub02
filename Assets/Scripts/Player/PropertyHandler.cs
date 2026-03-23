@@ -6,7 +6,8 @@ using UnityEngine.Events;
 public class PropertyHandler : MonoBehaviour
 {
     [Header("玩家基础属性")]
-    [SerializeField] public PlayerProperty playerProperty;
+    [SerializeField]private PlayerProperty playerProperty;
+    public PlayerProperty PlayerProperty{ get { return playerProperty; } }
 
     private float currentHp;
     public float CurrentHp

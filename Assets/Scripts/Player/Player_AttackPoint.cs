@@ -24,7 +24,7 @@ public class Player_AttackPoint : MonoBehaviour
             if (monster != null)
             {
                 // ...则调用其 TakeDamage 方法，并将玩家的伤害值作为参数传入。
-                monster.TakeDamage(propertyHandler.playerProperty.damage);
+                monster.TakeDamage(propertyHandler.PlayerProperty.damage);
             }
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Events;
+using System;
 
 public class AnimationHandler_ForPlayerArcher : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class AnimationHandler_ForPlayerArcher : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         PlayerManager.instance.onMoveOrIdle += SetRunOrIdle;
-        PlayerManager.instance.onShoot += PlayAttack;
+        PlayerManager.instance.onAttack += PlayAttack;
         PlayerManager.instance.onBeSlashed += BeSlashed;
         PlayerManager.instance.onBeShot += BeShot;
         PlayerManager.instance.onHpZero += PlayDie;
@@ -26,7 +27,7 @@ public class AnimationHandler_ForPlayerArcher : MonoBehaviour
     {
         animator.SetBool("isRun", isMove);
     }
-    private void PlayAttack(JudgeState_ForPlayerArcher.AttackType attackType)
+    private void PlayAttack<T>(T attackType) where T : Enum
     {
         switch(attackType)
         {

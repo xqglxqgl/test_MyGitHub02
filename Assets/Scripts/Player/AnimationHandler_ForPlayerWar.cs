@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Events;
+using System;
 
 public class AnimationHandler_ForPlayerWar : MonoBehaviour
 {
@@ -27,7 +28,7 @@ public class AnimationHandler_ForPlayerWar : MonoBehaviour
     {
         animator.SetBool("isRun", isMove);
     }
-    private void PlayAttack(JudgeState_ForPlayerWar.AttackType attackType)
+    private void PlayAttack<T>(T attackType) where T : Enum
     {
         switch(attackType)
         {

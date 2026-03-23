@@ -26,7 +26,7 @@ public class ObjManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 生成Obj
+    /// 销毁Obj
     /// </summary>
     public void DespawnObj(GameObject obj)//调用者传入需要销毁的Obj
     {

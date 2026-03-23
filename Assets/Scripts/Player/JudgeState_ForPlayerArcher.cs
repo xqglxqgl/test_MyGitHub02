@@ -7,17 +7,19 @@ public class JudgeState_ForPlayerArcher : MonoBehaviour
 {
     private Vector2 movementVector;
 
-    /// 锁定目标相关变量
+    //锁定目标相关变量
     private Transform target;
     private float distanceToTarget;
     private Vector2 attackDirection;
 
-    /// 攻击相关变量
-    private float attackInterval;
+    [Header("玩家自身属性引用")]
+    [SerializeField]private PropertyHandler propertyHandler;
+    private float attackInterval => propertyHandler.PlayerProperty.attackInterval;
+    private float attackRange => propertyHandler.PlayerProperty.attackRange;
     private float lastAttackTime;
-    private float attackRange;
+    private bool canAttack ;
 
-    /// 角色面朝方向相关变量
+    // 角色面朝方向相关变量
     private float localScaleX;
     private Vector2 originalScale;
 
@@ -51,6 +53,14 @@ public class JudgeState_ForPlayerArcher : MonoBehaviour
 
     void Update()
     {
+        if (Time.time < lastAttackTime + attackInterval)
+        {
+            canAttack = false;
+        }
+        else
+        {
+            canAttack = true;
+        }
         AssessFacingDirection();
         JudgeNeedMoveOrIdle();
         JudgeNeedAttack();
@@ -65,9 +75,6 @@ public class JudgeState_ForPlayerArcher : MonoBehaviour
     {
         target = lockTarget;
         if (target == null) return;
-
-        this.attackRange = attackRange;
-        this.attackInterval = attackInterval;
 
         attackDirection = target.position - transform.position;
         distanceToTarget = Vector2.Distance(transform.position, target.position);
@@ -93,13 +100,13 @@ public class JudgeState_ForPlayerArcher : MonoBehaviour
     /// </summary>
     private void JudgeNeedAttack()
     {
-        if (Time.time < lastAttackTime + attackInterval) return;//如果距离上次攻击时间小于攻击间隔,则不攻击
+        if (canAttack == false) return;//如果距离上次攻击时间小于攻击间隔,则不攻击
         if (target == null) return;//如果没有目标,则不攻击
 
         if (distanceToTarget <= attackRange)
         {
-            onAttack?.Invoke(AssessAttackType());
             lastAttackTime = Time.time;
+            onAttack?.Invoke(AssessAttackType());
         }
     }
 

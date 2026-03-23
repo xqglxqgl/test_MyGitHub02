@@ -85,7 +85,7 @@ public class ArrowCreater : MonoBehaviour
         arrow.transform.rotation = Quaternion.identity; // 每次发射时重置箭矢旋转角度
         arrow.transform.right = attackDirection; // 每次发射时调整箭矢朝向攻击方向
         arrow.GetComponent<ArrowMovement>().direction = attackDirection;
-        arrow.GetComponent<ArrowMovement>().damage = propertyHandler.playerProperty.damage;
+        arrow.GetComponent<ArrowMovement>().damage = propertyHandler.PlayerProperty.damage;
     }
 
     //AnimationEvent: 射出箭矢

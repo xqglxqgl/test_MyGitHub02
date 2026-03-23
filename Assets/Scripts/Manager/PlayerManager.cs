@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,8 +40,7 @@ public class PlayerManager : MonoBehaviour
 
     //动画事件
     public UnityAction<bool> onMoveOrIdle;
-    public UnityAction<JudgeState_ForPlayerWar.AttackType> onAttack;
-    public UnityAction<JudgeState_ForPlayerArcher.AttackType> onShoot;
+    public UnityAction<Enum> onAttack;
     public UnityAction onBeSlashed;
     public UnityAction onBeShot;
 
@@ -139,7 +139,7 @@ public class PlayerManager : MonoBehaviour
 
         autoLockSystem_WithCursor.onLockTargetChange += OnLockTargetChanged;
         
-        judgeState_ForPlayerArcher.onAttack += OnShoot;
+        judgeState_ForPlayerArcher.onAttack += OnAttack;
         judgeState_ForPlayerArcher.isOnMove += OnMoveOrIdle;
 
         animationHandler_ForPlayerArcher.reallyDie += OnReallyDie;
@@ -154,7 +154,7 @@ public class PlayerManager : MonoBehaviour
     /// </summary>
     private void OnMovementVectorChanged(Vector2 movementVector)
     {
-        float moveSpeed = propertyHandler.playerProperty.moveSpeed;
+        float moveSpeed = propertyHandler.PlayerProperty.moveSpeed;
 
         onMovementVectorChanged?.Invoke(movementVector,moveSpeed);
     }
@@ -164,8 +164,8 @@ public class PlayerManager : MonoBehaviour
     /// </summary>
     private void OnLockTargetChanged(Transform lockTarget)
     {
-        float attackRange = propertyHandler.playerProperty.attackRange;
-        float attackInterval = propertyHandler.playerProperty.attackInterval;
+        float attackRange = propertyHandler.PlayerProperty.attackRange;
+        float attackInterval = propertyHandler.PlayerProperty.attackInterval;
 
         onLockTargetChange?.Invoke(lockTarget,attackRange,attackInterval);
     }
@@ -179,19 +179,11 @@ public class PlayerManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 战士玩家攻击了,广播攻击类型
+    /// 玩家攻击了,广播攻击类型
     /// </summary>
-    private void OnAttack(JudgeState_ForPlayerWar.AttackType attackType)
+    public void OnAttack<T> (T attackType) where T : Enum
     {
         onAttack?.Invoke(attackType);
-    }
-
-    /// <summary>
-    /// 弓箭手玩家射击了,广播射击类型
-    /// </summary>
-    private void OnShoot(JudgeState_ForPlayerArcher.AttackType attackType)
-    {
-        onShoot?.Invoke(attackType);
     }
 
     /// <summary>
@@ -200,7 +192,7 @@ public class PlayerManager : MonoBehaviour
     private void OnHpChanged()
     {
         float currentHp = propertyHandler.CurrentHp;
-        float maxHp = propertyHandler.playerProperty.maxHp;
+        float maxHp = propertyHandler.PlayerProperty.maxHp;
         onHpChanged?.Invoke(currentHp,maxHp);
     }
 
