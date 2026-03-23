@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputManager : Singleton<InputManager>
+public class TouchHandler_ForMove2 : MonoBehaviour
 {
-    private Vector2 movementDir;
-    public Vector2 MovementDir{get => movementDir;}//对外暴露移动向量,为了移动
+    private Vector2 movementVector;
+    public Vector2 MovementVector{get => movementVector;}//对外暴露移动向量,为了移动
 
     private Vector2 touchStartPos;
     public Vector2 TouchStartPos{get => touchStartPos;}//对外暴露触摸开始位置,为了显示摇杆的UI
@@ -28,12 +28,12 @@ public class InputManager : Singleton<InputManager>
 
     private void OnIdle()
     {
-        movementDir = Vector2.zero;
+        movementVector = Vector2.zero;
     }
 
     private void OnMove()
     {
-        movementDir = (touchCurrentPos - touchStartPos).normalized;
+        movementVector = (touchCurrentPos - touchStartPos).normalized;
     }
 
     private bool IsTouchingRightArea()
@@ -46,11 +46,15 @@ public class InputManager : Singleton<InputManager>
         }
     }
 
+    private void TouchPosIsChanged()//告诉UIManager, 触摸点位置改变了
+    {
+        UIManager.instance.TouchPosChanged(touchStartPos, touchCurrentPos);
+    }
     private void ResetTouch()
     {
         touchStartPos = initPos;
         touchCurrentPos = initPos;
-        movementDir = Vector2.zero;
+        movementVector = Vector2.zero;
         OnIdle();
     }
 
@@ -70,6 +74,7 @@ public class InputManager : Singleton<InputManager>
             case TouchPhase.Began:
                 touchStartPos = touch.position;
                 touchCurrentPos = touch.position;
+                TouchPosIsChanged();
                 OnIdle();
                 break;
             case TouchPhase.Moved:
@@ -80,6 +85,7 @@ public class InputManager : Singleton<InputManager>
                 }
                 //如果开始的触摸点不在屏幕下半部分,则直接返回
                 touchCurrentPos = touch.position;
+                TouchPosIsChanged();
                 OnMove();
                 break;
             case TouchPhase.Ended:

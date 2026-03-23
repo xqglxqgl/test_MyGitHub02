@@ -30,7 +30,7 @@ public class Player : Unit
     }
     private void UpdateMovment()
     {
-        var inputDir = InputManager.Instance.NormalizedDirection;
+        var inputDir = InputManager.Instance.MovementDir;
         var moveDir = speed * Time.fixedDeltaTime * inputDir;
 
         var currentPos = rigidBody.position;
