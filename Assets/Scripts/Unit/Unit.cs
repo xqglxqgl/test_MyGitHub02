@@ -67,5 +67,17 @@ public class UnitManager : MonoBehaviour
         return closestUnit;
     }
 
+    public void DoAttack()
+    {
+        Archer a = default;
+        Goblin g = default;
+        a.Attack();
+        g.Attack();
+
+        // 更好的写法是
+        Unit unit = default;
+        // 无需要在意他是什么
+        unit.Attack();
+    }
 
 }
