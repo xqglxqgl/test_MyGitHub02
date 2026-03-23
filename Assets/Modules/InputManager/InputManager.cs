@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class InputManager : Singleton<InputManager>
 {
-    public Vector2 InputDirection { get; private set; }
+
+    /// <summary>
+    /// Normalized
+    /// </summary>
+    public Vector2 NormalizedDirection { get; private set; }
     private void Update()
     {
         var xAxis = Input.GetAxis("Horizontal");
@@ -12,6 +16,6 @@ public class InputManager : Singleton<InputManager>
 
         Vector2 dir = new Vector2(xAxis, yAxis);
         dir = dir.normalized;
-        this.InputDirection = dir;
+        this.NormalizedDirection = dir;
     }
 }

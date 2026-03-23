@@ -10,17 +10,15 @@ public class UnitManager : Singleton<UnitManager>
         this.unitList = new();
     }
 
-    public GameObject CreateEnemyArcher()
+
+    public Unit CreatePlayer(string viewPrefab)
     {
-        var prefab = AssetManager.Instance.LoadAsset<GameObject>(AssetPathUtility.ArcherPrefab);
+        var playerGo = Pool.Instance.Spawn(AssetPathUtility.Unit_Player);
+        var player = playerGo.GetComponent<Player>();
+        player.OnCreateView(viewPrefab);
+        this.unitList.Add(player);
 
-        Debug.Log($"Create Archer {prefab}");
-        var unitGo = GameObject.Instantiate(prefab);
-#warning 尚未实现Unit
-        // var unit = unitGo.GetComponent<Unit>();
-        // this.unitList.Add(unit);
-
-        return unitGo;
+        return player;
     }
 
 }

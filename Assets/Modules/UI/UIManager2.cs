@@ -20,6 +20,12 @@ public class UIManager2 : MonoBehaviour
 
     public void ToUI<T>() where T : UIBase
     {
+        if (CurrentUI != null)
+        {
+            Pool.Instance.Recycle(CurrentUI.gameObject);
+            CurrentUI = null;
+        }
+
         var path = GetUIPath<T>();
         var prefab = AssetManager.Instance.LoadAsset<GameObject>(path);
         // EnsurePoolCreated

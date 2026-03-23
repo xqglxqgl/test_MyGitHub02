@@ -16,11 +16,11 @@ public class UICreatePlayer : UIBase
 
     private void OnClickWarriorBtn()
     {
-        throw new NotImplementedException();
+        Debug.LogError("未实现");
     }
-
     private void OnClickArcherBtn()
     {
-        throw new NotImplementedException();
+        UIManager2.Instance.ToUI<UIGame>();
+        UnitManager.Instance.CreatePlayer(AssetPathUtility.UnitView_Archer);
     }
 }

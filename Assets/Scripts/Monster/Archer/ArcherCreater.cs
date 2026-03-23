@@ -38,12 +38,11 @@ public class ArcherCreater : MonoBehaviour
     private GameObject CreateObj()
     {
         InitPosRandom();
-        // GameObject obj = Instantiate(prefabSpawn,spawnPosition,Quaternion.identity);
-        var archerGo = UnitManager.Instance.CreateEnemyArcher();
+        GameObject obj = Instantiate(prefabSpawn, spawnPosition, Quaternion.identity);
 
-        archerGo.GetComponent<MonsterStatus>().onDie += OnDie;//订阅死亡事件,根据Obj的类型决定所引用的组件(这里是MonsterStatus)
+        obj.GetComponent<MonsterStatus>().onDie += OnDie;//订阅死亡事件,根据Obj的类型决定所引用的组件(这里是MonsterStatus)
 
-        return archerGo;
+        return obj;
     }
     private void OnGetObj(GameObject obj)
     {   
