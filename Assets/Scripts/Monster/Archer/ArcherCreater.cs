@@ -37,13 +37,13 @@ public class ArcherCreater : MonoBehaviour
 
     private GameObject CreateObj()
     {
-       
-        InitPosRandom(); 
-        GameObject obj = Instantiate(prefabSpawn,spawnPosition,Quaternion.identity);
+        InitPosRandom();
+        // GameObject obj = Instantiate(prefabSpawn,spawnPosition,Quaternion.identity);
+        var archerGo = UnitManager.Instance.CreateEnemyArcher();
 
-        obj.GetComponent<MonsterStatus>().onDie += OnDie;//订阅死亡事件,根据Obj的类型决定所引用的组件(这里是MonsterStatus)
+        archerGo.GetComponent<MonsterStatus>().onDie += OnDie;//订阅死亡事件,根据Obj的类型决定所引用的组件(这里是MonsterStatus)
 
-        return obj;
+        return archerGo;
     }
     private void OnGetObj(GameObject obj)
     {   
@@ -66,9 +66,10 @@ public class ArcherCreater : MonoBehaviour
 
 
 
+
     private void SpawnObj(GameObject prefab)//接收生成Obj事件所传入的预制体
     {
-        if(!prefab.CompareTag("Archer"))return;//如果不是Archer, 则不生成(与其它Creater区分开)
+        if (!prefab.CompareTag("Archer")) return;//如果不是Archer, 则不生成(与其它Creater区分开)
         prefabSpawn = prefab;
         objPool.Get();
     }
