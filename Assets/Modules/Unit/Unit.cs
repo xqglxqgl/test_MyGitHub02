@@ -18,19 +18,3 @@ public class Unit : MonoBehaviour
     // 攻击
     public virtual void Attack() { }
 }
-
-public class Archer : Unit
-{
-    public override void Attack()
-    {
-        Debug.Log("实际的攻击逻辑-弓箭手");
-    }
-}
-
-public class Goblin : Unit
-{
-    public override void Attack()
-    {
-        Debug.Log("实际的攻击逻辑-哥布林");
-    }
-}
