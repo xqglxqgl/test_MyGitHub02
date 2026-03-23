@@ -21,6 +21,5 @@ public class UICreatePlayer : UIBase
     private void OnClickArcherBtn()
     {
         UIManager2.Instance.ToUI<UIGame>();
-        UnitManager.Instance.CreatePlayer(AssetPathUtility.UnitView_Archer);
     }
 }

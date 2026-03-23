@@ -20,10 +20,11 @@ public class UIManager2 : MonoBehaviour
 
     public void ToUI<T>() where T : UIBase
     {
-        if (CurrentUI != null)
+        if (this.CurrentUI != null)
         {
+            this.CurrentUI.OnHide();
             Pool.Instance.Recycle(CurrentUI.gameObject);
-            CurrentUI = null;
+            this.CurrentUI = null;
         }
 
         var path = GetUIPath<T>();
@@ -34,6 +35,7 @@ public class UIManager2 : MonoBehaviour
         var uiGo = Pool.Instance.Spawn(typeof(T).Name, this.transform);
         var ui = uiGo.GetComponent<UIBase>();
         this.CurrentUI = ui;
+        this.CurrentUI.OnShow();
 
     }
 }
