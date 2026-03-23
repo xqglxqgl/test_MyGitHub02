@@ -12,6 +12,8 @@ public class Pool : Singleton<Pool>
     private void Awake()
     {
         this.prefabs = new();
+        this.pools = new();
+        this.instances = new();
     }
 
     public void CreatePool(string key, GameObject prefab)
@@ -23,7 +25,7 @@ public class Pool : Singleton<Pool>
         }
     }
 
-    public GameObject Spawn(string key)
+    public GameObject Spawn(string key, Transform parent = null)
     {
         if (!this.prefabs.ContainsKey(key))
         {
@@ -34,12 +36,14 @@ public class Pool : Singleton<Pool>
         {
             var result = this.pools[key].Dequeue();
             this.instances.Add(result, key);
+            result.transform.SetParent(parent, false);
             return result;
         }
         else
         {
             var prefab = this.prefabs[key];
             var result = GameObject.Instantiate(prefab);
+            result.transform.SetParent(parent, false);
             this.instances.Add(result, key);
             return result;
         }

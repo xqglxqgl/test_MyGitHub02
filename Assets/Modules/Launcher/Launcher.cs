@@ -2,9 +2,8 @@ using UnityEngine;
 
 public class Launcher : MonoBehaviour
 {
-    private void Awake()
+    private void Start()
     {
-        // 非必要
-        Singleton<UnitManager>.Instance.Touch();
+        UIManager2.Instance.ToUI<UICreatePlayer>();
     }
 }
