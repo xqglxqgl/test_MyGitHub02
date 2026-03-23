@@ -18,5 +18,7 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
         }
     }
 
-    protected virtual bool AutoCreateSingleton { get; } = true;
+    protected virtual bool AutoCreateSingleton { get => true; }
+
+    public void Touch() { }
 }
