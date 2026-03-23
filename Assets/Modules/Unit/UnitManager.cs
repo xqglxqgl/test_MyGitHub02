@@ -12,7 +12,7 @@ public class UnitManager : Singleton<UnitManager>
 
     public GameObject CreateEnemyArcher()
     {
-        var prefab = AssetManager.Instance.LoadAsset<GameObject>(AssetPathUtility.Archer);
+        var prefab = AssetManager.Instance.LoadAsset<GameObject>(AssetPathUtility.ArcherPrefab);
 
         Debug.Log($"Create Archer {prefab}");
         var unitGo = GameObject.Instantiate(prefab);

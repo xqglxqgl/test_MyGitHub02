@@ -24,5 +24,5 @@ public class AssetManager : Singleton<AssetManager>
 
 public static class AssetPathUtility
 {
-    public const string Archer = "Prefabs/Monster/Archer";
+    public const string ArcherPrefab = "Prefabs/Monster/Archer";
 }
