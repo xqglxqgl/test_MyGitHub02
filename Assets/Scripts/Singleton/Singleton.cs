@@ -18,6 +18,8 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
         }
     }
 
+    // 这个是非自动创建的单例类，由场景中的实例自行提供
+#pragma warning 这个非自动创建功能还为实现
     protected virtual bool AutoCreateSingleton { get => true; }
 
     public void Touch() { }
