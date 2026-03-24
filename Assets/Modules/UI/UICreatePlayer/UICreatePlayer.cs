@@ -16,10 +16,16 @@ public class UICreatePlayer : UIBase
 
     private void OnClickWarriorBtn()
     {
-        Debug.LogError("未实现");
+        var player = UnitManager.Instance.CreatePlayer(AssetPathUtility.UnitView_Warrior);
+        CameraManager.Instance.Target = player.transform;
+
+        UIManager2.Instance.ToUI<UIGame>();
     }
     private void OnClickArcherBtn()
     {
+        var player = UnitManager.Instance.CreatePlayer(AssetPathUtility.UnitView_Archer);
+        CameraManager.Instance.Target = player.transform;
+
         UIManager2.Instance.ToUI<UIGame>();
     }
 }
