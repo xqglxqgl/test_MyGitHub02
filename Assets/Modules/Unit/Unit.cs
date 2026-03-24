@@ -5,4 +5,6 @@ public class Unit : MonoBehaviour
 {
 
     public virtual void OnCreateView(string viewKey) { }
+
+    public virtual void AutoLockTarget() { }
 }

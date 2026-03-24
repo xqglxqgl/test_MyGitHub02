@@ -11,6 +11,8 @@ public class Player : Unit
 
     private Animator viewAnimator;
 
+    private Unit target;
+
     public override void OnCreateView(string viewKey)
     {
         var viewInstance = Pool.Instance.Spawn(viewKey);
@@ -22,11 +24,15 @@ public class Player : Unit
 
     }
 
+    public override void AutoLockTarget()
+    {
+        // 玩家自动锁定目标
+        target = UnitManager.Instance.GetNearestTarget(this, LayerMask.GetMask("Monster"));
+    }
+
     private void FixedUpdate()
     {
         this.UpdateMovment();
-
-        this.UpdateAnimation();
     }
     private void UpdateMovment()
     {
@@ -38,8 +44,4 @@ public class Player : Unit
         rigidBody.MovePosition(currentPos + moveDir);
     }
 
-    private void UpdateAnimation()
-    {
-        // this.viewAnimator
-    }
 }

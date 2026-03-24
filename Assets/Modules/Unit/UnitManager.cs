@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UnitManager : Singleton<UnitManager>
@@ -28,6 +29,26 @@ public class UnitManager : Singleton<UnitManager>
         monster.OnCreateView(viewPrefab);
         this.unitList.Add(monster);
         return monster;
+    }
+
+    public Unit GetNearestTarget(Unit self,LayerMask layer)
+    {
+        Unit nearestTarget = null;
+        var nearestDistance = Mathf.Infinity;
+        foreach (var unit in this.unitList)
+        {
+            if(unit.gameObject.layer != layer)
+            {
+                continue;
+            }
+            var targetDistance = Vector2.Distance(self.transform.position, unit.transform.position);
+            if (nearestTarget == null || targetDistance < nearestDistance)
+            {
+                nearestTarget = unit;
+                nearestDistance = targetDistance;
+            }
+        }
+        return nearestTarget;
     }
 
 }

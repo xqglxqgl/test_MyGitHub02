@@ -25,15 +25,8 @@ public class Monster : Unit
     private void FixedUpdate()
     {
         this.UpdateMovment();
-
-        this.UpdateAnimation();
     }
     private void UpdateMovment()
     {
-    }
-
-    private void UpdateAnimation()
-    {
-        // this.viewAnimator
     }
 }
