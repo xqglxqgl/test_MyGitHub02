@@ -22,7 +22,14 @@ public class InputManager : Singleton<InputManager>
 
     void Update()
     {
-        HandleTouch();
+        if (Input.touchCount <= 0)
+        {
+            HandleKeyboard();
+        }
+        else
+        {
+            HandleTouch();
+        }
     }
 
 
@@ -54,10 +61,18 @@ public class InputManager : Singleton<InputManager>
         OnIdle();
     }
 
+    private void HandleKeyboard()
+    {
+        var xAxis = Input.GetAxis("Horizontal");
+        var yAxis = Input.GetAxis("Vertical");
+
+        Vector2 dir = new Vector2(xAxis, yAxis);
+        dir = dir.normalized;
+        this.movementDir = dir;
+    }
+
     private void HandleTouch()
     {
-        if (Input.touchCount <= 0) return;//如果没有触摸,则直接返回
-
         Touch touch = Input.GetTouch(0);//获取第一个触摸点
         if (touch.position.y > Screen.height / 2)//如果开始的触摸点不在屏幕下半部分,则直接返回
         {
