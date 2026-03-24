@@ -25,5 +25,5 @@ public class AssetManager : Singleton<AssetManager>
 public static class AssetPathUtility
 {
     public const string Unit_Player = "Prefabs/Prefab_Player";
-    public const string UnitView_Archer = "Prefabs/Prefab_Archer";
+    public const string UnitView_Archer = "Prefabs/Prefab_PArcher";
 }

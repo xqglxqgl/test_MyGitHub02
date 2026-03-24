@@ -74,4 +74,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidBody: {fileID: 28608193025884788}
-  speed: 3
+  speed: 5
