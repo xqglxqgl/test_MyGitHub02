@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 2415328843798076196}
   - component: {fileID: 4659926808177938036}
   - component: {fileID: 8618825158968860256}
-  - component: {fileID: 7038992899002410383}
+  - component: {fileID: -6464223415847696394}
   m_Layer: 0
   m_HasEditorInfo: 1
-  m_Name: Prefab_MGoblin
+  m_Name: Prefab_MArcher
   m_TagString: Goblin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -1327338791, guid: dd1b95bb33c44504588c28bfa17f7450, type: 3}
+  m_Sprite: {fileID: 965600920, guid: 3e0de6a04c9f645458f730c1b2ce5f9f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -102,7 +102,7 @@ Animator:
   m_GameObject: {fileID: 1094944783890610783}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 74d0bb5d8c808834c8d403fe227502b7, type: 2}
+  m_Controller: {fileID: 9100000, guid: 7d7e6f3c50fddf042822b24f73992069, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_UpdateFrequencyMode: 0
@@ -150,7 +150,7 @@ CapsuleCollider2D:
   m_Offset: {x: -0.008566558, y: -0.10079348}
   m_Size: {x: 0.6706574, y: 0.8893888}
   m_Direction: 0
---- !u!114 &7038992899002410383
+--- !u!114 &-6464223415847696394
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -159,7 +159,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1094944783890610783}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 731cfccfb05f8154b8b5300884995661, type: 3}
+  m_Script: {fileID: 11500000, guid: 06cc26f9978959e4d852f7c0e60d04ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 4659926808177938036}

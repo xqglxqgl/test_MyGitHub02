@@ -6,9 +6,6 @@ using UnityEngine.UI;
 public class SpawnArcher_testBT : MonoBehaviour
 {
     private Button thisButton;
-    
-    [Header("要生成的所有Obj")]
-    [SerializeField]private GameObject[] objPrefabs;
 
     private void Awake()
     {
@@ -17,9 +14,6 @@ public class SpawnArcher_testBT : MonoBehaviour
     }
     public void SpawnObjGo()
     {
-        foreach (var item in objPrefabs)
-        {
-            ObjManager.instance.SpawnObj(item);
-        }
+        var archer = UnitManager.Instance.CreateMonster(AssetPathUtility.UnitView_MArcher);
     }
 }
