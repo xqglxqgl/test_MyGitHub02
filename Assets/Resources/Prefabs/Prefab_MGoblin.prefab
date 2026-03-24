@@ -12,11 +12,10 @@ GameObject:
   - component: {fileID: 2415328843798076196}
   - component: {fileID: 4659926808177938036}
   - component: {fileID: 8618825158968860256}
-  - component: {fileID: 8425906916174869339}
-  m_Layer: 6
+  m_Layer: 0
   m_HasEditorInfo: 1
-  m_Name: Prefab_PWarrior
-  m_TagString: Player_Archer
+  m_Name: Prefab_MGoblin
+  m_TagString: Goblin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -81,7 +80,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -1719051124, guid: e798df5fa90874847b826fcfa2e1e4a2, type: 3}
+  m_Sprite: {fileID: -1327338791, guid: dd1b95bb33c44504588c28bfa17f7450, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -102,7 +101,7 @@ Animator:
   m_GameObject: {fileID: 1094944783890610783}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 0114f2f2f0cd2474bbb545e1af89dfbd, type: 2}
+  m_Controller: {fileID: 9100000, guid: 74d0bb5d8c808834c8d403fe227502b7, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_UpdateFrequencyMode: 0
@@ -150,17 +149,3 @@ CapsuleCollider2D:
   m_Offset: {x: -0.008566558, y: -0.10079348}
   m_Size: {x: 0.6706574, y: 0.8893888}
   m_Direction: 0
---- !u!114 &8425906916174869339
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1094944783890610783}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 473592d138f1e6043b10e3245aec49fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 4659926808177938036}
-  spriteRenderer: {fileID: 2415328843798076196}

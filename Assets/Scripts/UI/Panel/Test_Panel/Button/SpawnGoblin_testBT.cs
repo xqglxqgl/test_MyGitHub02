@@ -7,8 +7,6 @@ public class SpawnGoblin_testBT : MonoBehaviour
 {
     private Button thisButton;
     
-    [Header("要生成的所有Obj")]
-    [SerializeField]private GameObject[] objPrefabs;
 
     private void Awake()
     {
@@ -17,9 +15,6 @@ public class SpawnGoblin_testBT : MonoBehaviour
     }
     public void SpawnObjGo()
     {
-        foreach (var item in objPrefabs)
-        {
-            ObjManager.instance.SpawnObj(item);
-        }
+        var goblin = UnitManager.Instance.CreateMonster(AssetPathUtility.Unit_MGoblin);
     }
 }

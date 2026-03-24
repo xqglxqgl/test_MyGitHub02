@@ -27,4 +27,6 @@ public static class AssetPathUtility
     public const string Unit_Player = "Prefabs/Prefab_Player";
     public const string UnitView_Archer = "Prefabs/Prefab_PArcher";
     public const string UnitView_Warrior = "Prefabs/Prefab_PWarrior";
+    public const string Unit_Monster = "Prefabs/Prefab_Monster";
+    public const string Unit_MGoblin = "Prefabs/Prefab_MGoblin";
 }
