@@ -18,9 +18,14 @@ public class AnimationHandler_ForPArcher : MonoBehaviour
         SetRunOrIdle();
     }
 
+    public void PlayAnimationByInput(Vector2 dir)
+    {
+
+    }
+
     private void SetRunOrIdle()
     {
-        if(InputManager.Instance.MovementDir == Vector2.zero)
+        if (InputManager.Instance.MovementDir == Vector2.zero)
         {
             animator.SetBool("isRun", false);
         }

@@ -10,6 +10,7 @@ public class Player : Unit
     private GameObject view;
 
     private Animator viewAnimator;
+    private AnimationHandler_ForPArcher animationHandler;
 
     private Unit target;
 
@@ -21,6 +22,7 @@ public class Player : Unit
         this.view.transform.localPosition = Vector3.zero;
 
         this.viewAnimator = this.view.GetComponent<Animator>();
+        this.animationHandler = this.view.GetComponent<AnimationHandler_ForPArcher>();
 
     }
 
@@ -33,6 +35,7 @@ public class Player : Unit
     private void FixedUpdate()
     {
         this.UpdateMovment();
+        this.animationHandler.PlayAnimationByInput(InputManager.Instance.MovementDir);
     }
     private void UpdateMovment()
     {
