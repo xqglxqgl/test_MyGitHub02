@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player : Unit
 {
@@ -12,6 +13,7 @@ public class Player : Unit
     private Animator viewAnimator;
 
     private Unit target;
+    private Vector2 attackDir;
 
     public override void OnCreateView(string viewKey)
     {
@@ -72,38 +74,13 @@ public class Player : Unit
 
         var distance = Vector2.Distance(this.transform.position, target.transform.position);
         var attackDir = target.transform.position - transform.position;
-        if (Mathf.Abs(distance) <= property.attackRange)
+        if (distance <= property.attackRange)
         {
-            PlayAttackAnimationByDir(attackDir);
+            onAttack?.Invoke(attackDir);
         }
     }
 
-    /// <summary>
-    /// 根据攻击方向播放不同的攻击动画
-    /// </summary>
-    private void PlayAttackAnimationByDir(Vector2 attackDir)
-    {
-        var angle = Mathf.Atan2(attackDir.y, attackDir.x) * Mathf.Rad2Deg;
 
-        switch (angle)
-        {
-            case float a when a >= -30 && a < 30 || a >= 150 && a < -150:
-                viewAnimator.Play("Shoot_Horizontal");
-                break;
-            case float a when a >= 60 && a < 120:
-                viewAnimator.Play("Shoot_Up");
-                break;
-            case float a when a >= -120 && a < -60:
-                viewAnimator.Play("Shoot_Down");
-                break;
-            case float a when a >= 30 && a < 60 || a >= 120 && a < 150:
-                viewAnimator.Play("Shoot_Diagonal_Up");
-                break;
-            case float a when a >= -150 && a < -120 || a >= -60 && a < -30:
-                viewAnimator.Play("Shoot_Diagonal_Down");
-                break;
-        }
-    }
 
     private void UpdateMovment()
     {
