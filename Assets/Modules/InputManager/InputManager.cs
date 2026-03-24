@@ -71,6 +71,16 @@ public class InputManager : Singleton<InputManager>
         this.movementDir = dir;
     }
 
+    private void MouseSimulateTouch()
+    {
+        // 按下
+        Input.GetMouseButtonDown(0);
+        // 抬起
+        Input.GetMouseButtonUp(0);
+        // 位移
+        var mousePos = Input.mousePosition;
+    }
+
     private void HandleTouch()
     {
         Touch touch = Input.GetTouch(0);//获取第一个触摸点
