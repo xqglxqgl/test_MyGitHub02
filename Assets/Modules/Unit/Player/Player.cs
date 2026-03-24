@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.VersionControl;
 using UnityEngine;
 
 public class Player : Unit
@@ -8,7 +9,6 @@ public class Player : Unit
     [SerializeField] Rigidbody2D rigidBody;
     [SerializeField] float speed;
     private GameObject view;
-
     private Animator viewAnimator;
     private AnimationHandler_ForPArcher animationHandler;
 
@@ -23,10 +23,14 @@ public class Player : Unit
 
         this.viewAnimator = this.view.GetComponent<Animator>();
         this.animationHandler = this.view.GetComponent<AnimationHandler_ForPArcher>();
-
+    }
+    public override void InitProperty(string propertyKey)
+    {
+        this.property = AssetManager.Instance.LoadAsset<Property>(propertyKey);
+        this.currentHp = this.property.maxHp;
     }
 
-    public override void AutoLockTarget()
+    private void AutoLockTarget()
     {
         // 玩家自动锁定目标
         target = UnitManager.Instance.GetNearestTarget(this, LayerMask.GetMask("Monster"));

@@ -19,9 +19,12 @@ public class Monster : Unit
         this.view.transform.localPosition = Vector3.zero;
 
         this.viewAnimator = this.view.GetComponent<Animator>();
-
     }
-
+    public override void InitProperty(string propertyKey)
+    {
+        this.property = AssetManager.Instance.LoadAsset<Property>(propertyKey);
+        this.currentHp = this.property.maxHp;
+    }
     private void FixedUpdate()
     {
         this.UpdateMovment();

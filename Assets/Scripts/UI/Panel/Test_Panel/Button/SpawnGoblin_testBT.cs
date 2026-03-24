@@ -15,6 +15,6 @@ public class SpawnGoblin_testBT : MonoBehaviour
     }
     public void SpawnObjGo()
     {
-        var goblin = UnitManager.Instance.CreateMonster(AssetPathUtility.Unit_MGoblin);
+        var goblin = UnitManager.Instance.CreateMonster(AssetPathUtility.Unit_MGoblin,AssetPathUtility.Property_MGoblin);
     }
 }

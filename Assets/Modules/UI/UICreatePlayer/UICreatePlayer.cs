@@ -16,14 +16,14 @@ public class UICreatePlayer : UIBase
 
     private void OnClickWarriorBtn()
     {
-        var player = UnitManager.Instance.CreatePlayer(AssetPathUtility.UnitView_Warrior);
+        var player = UnitManager.Instance.CreatePlayer(AssetPathUtility.UnitView_Warrior,AssetPathUtility.Property_PWarrior);
         CameraManager.Instance.Target = player.transform;
 
         UIManager2.Instance.ToUI<UIGame>();
     }
     private void OnClickArcherBtn()
     {
-        var player = UnitManager.Instance.CreatePlayer(AssetPathUtility.UnitView_Archer);
+        var player = UnitManager.Instance.CreatePlayer(AssetPathUtility.UnitView_Archer,AssetPathUtility.Property_PArcher);
         CameraManager.Instance.Target = player.transform;
 
         UIManager2.Instance.ToUI<UIGame>();
