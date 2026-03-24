@@ -39,10 +39,8 @@ public class UnitManager : Singleton<UnitManager>
         var nearestDistance = Mathf.Infinity;
         foreach (var unit in this.unitList)
         {
-            if(unit.gameObject.layer != layer)
-            {
-                continue;
-            }
+            if((1<<unit.gameObject.layer & layer.value) == 0)continue;
+        
             var targetDistance = Vector2.Distance(self.transform.position, unit.transform.position);
             if (nearestTarget == null || targetDistance < nearestDistance)
             {

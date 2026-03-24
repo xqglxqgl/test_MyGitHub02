@@ -6,7 +6,7 @@ public class Monster : Unit
 {
     [SerializeField] Rigidbody2D rigidbody;
     [SerializeField] float speed;
-
+    
     private GameObject view;
 
     private Animator viewAnimator;
