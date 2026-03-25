@@ -14,7 +14,7 @@ public class Arrow : Item
     private float lifeTime = 2f;
     private float dieTime;
 
-    private void Start()
+    private void OnEnable()
     {
         dieTime = Time.time + lifeTime;
     }
