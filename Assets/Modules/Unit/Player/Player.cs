@@ -10,16 +10,14 @@ public class Player : Unit
     [SerializeField] Rigidbody2D rigidBody;
     private GameObject view;
     private AnimationHandler animationHandler;
-
     private Unit target;
-    private Vector2 attackDir;
 
     public override void OnCreateView(string viewKey)
     {
         var viewInstance = Pool.Instance.Spawn(viewKey);
         this.view = viewInstance;
         this.view.transform.SetParent(this.transform, false);
-        this.view.transform.localPosition = Vector3.zero;
+        this.view.transform.localPosition = Vector2.zero;
 
         this.animationHandler = this.view.GetComponent<AnimationHandler>();
     }
@@ -38,7 +36,7 @@ public class Player : Unit
     void Update()
     {
         JudgeFlip();
-        SetRunOrIdle();
+        IsRunOrIdle();
         AutoLockTarget();
 
         JudgeAttack();
@@ -51,7 +49,7 @@ public class Player : Unit
     /// <summary>
     /// 根据玩家输入判断是否需要播放跑步或闲置动画
     /// </summary>
-    private void SetRunOrIdle()
+    private void IsRunOrIdle()
     {
         if (InputManager.Instance.MovementDir == Vector2.zero)
         {
@@ -83,10 +81,8 @@ public class Player : Unit
     private void UpdateMovment()
     {
         var inputDir = InputManager.Instance.MovementDir;
-        var moveDir = property.moveSpeed * Time.fixedDeltaTime * inputDir;
-
         var currentPos = rigidBody.position;
-
+        var moveDir = property.moveSpeed * Time.fixedDeltaTime * inputDir;
         rigidBody.MovePosition(currentPos + moveDir);
     }
 

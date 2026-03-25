@@ -5,13 +5,15 @@ using UnityEngine;
 public class InputManager : Singleton<InputManager>
 {
     private Vector2 movementDir;
-    public Vector2 MovementDir{get => movementDir;}//对外暴露移动向量,为了移动
+    public Vector2 MovementDir { get => movementDir; }//对外暴露移动向量,为了移动
+    private Vector2 mouseDownPos;
+    public Vector2 MouseDownPos { get => mouseDownPos; }
 
     private Vector2 touchStartPos;
-    public Vector2 TouchStartPos{get => touchStartPos;}//对外暴露触摸开始位置,为了显示摇杆的UI
+    public Vector2 TouchStartPos { get => touchStartPos; }//对外暴露触摸开始位置,为了显示摇杆的UI
     private Vector2 touchCurrentPos;
-    public Vector2 TouchCurrentPos{get => touchCurrentPos;}//对外暴露触摸当前位置,为了显示摇杆的UI
-    
+    public Vector2 TouchCurrentPos { get => touchCurrentPos; }//对外暴露触摸当前位置,为了显示摇杆的UI
+
     private Vector2 initPos = new Vector2(Screen.width / 2, Screen.height);
 
 
@@ -22,6 +24,7 @@ public class InputManager : Singleton<InputManager>
 
     void Update()
     {
+
         if (Input.touchCount <= 0)
         {
             HandleKeyboard();
@@ -63,22 +66,28 @@ public class InputManager : Singleton<InputManager>
 
     private void HandleKeyboard()
     {
-        var xAxis = Input.GetAxis("Horizontal");
-        var yAxis = Input.GetAxis("Vertical");
+        var xAxis = Input.GetAxisRaw("Horizontal");
+        var yAxis = Input.GetAxisRaw("Vertical");
 
         Vector2 dir = new Vector2(xAxis, yAxis);
         dir = dir.normalized;
         this.movementDir = dir;
     }
 
-    private void MouseSimulateTouch()
+    private void HandleMouseTouch()
     {
-        // 按下
-        Input.GetMouseButtonDown(0);
-        // 抬起
-        Input.GetMouseButtonUp(0);
-        // 位移
-        var mousePos = Input.mousePosition;
+        // 如果鼠标按下,则记录下鼠标按下的位置
+        if (Input.GetMouseButton(0))
+        {
+            touchCurrentPos = Input.mousePosition;
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            ResetTouch();
+        }
+
+
     }
 
     private void HandleTouch()

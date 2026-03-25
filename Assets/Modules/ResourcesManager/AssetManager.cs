@@ -37,4 +37,10 @@ public static class AssetPathUtility
     public const string Property_PWarrior = "ScriptableObject/Property_PWarrior";
     public const string Property_MGoblin = "ScriptableObject/Property_MGoblin";
     public const string Property_MArcher = "ScriptableObject/Property_MArcher";
+
+
+    public const string Item_Arrow = "Prefabs/Prefab_Arrow";
+    public const string ItemView_ArrowP = "Prefabs/Prefab_ArrowP";
+    public const string ItemView_ArrowM = "Prefabs/Prefab_ArrowM";
+
 }

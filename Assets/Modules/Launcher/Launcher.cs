@@ -16,6 +16,10 @@ public class Launcher : MonoBehaviour
         CreateOnePool(AssetPathUtility.Unit_Monster);
         CreateOnePool(AssetPathUtility.Unit_MGoblin);
         CreateOnePool(AssetPathUtility.UnitView_MArcher);
+
+        CreateOnePool(AssetPathUtility.Item_Arrow);
+        CreateOnePool(AssetPathUtility.ItemView_ArrowP);
+        CreateOnePool(AssetPathUtility.ItemView_ArrowM);
     }
 
     private void CreateOnePool(string path)
