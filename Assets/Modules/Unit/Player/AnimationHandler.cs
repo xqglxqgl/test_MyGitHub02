@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimaitionHandler : MonoBehaviour
+public class AnimationHandler : MonoBehaviour
 {
     [SerializeField] private Animator animator;
+    [SerializeField] private SpriteRenderer spriteRenderer;
 
     [Header("攻击动画名称")]
     [SerializeField] private string attackAnimationName_Up;
@@ -15,12 +16,11 @@ public class AnimaitionHandler : MonoBehaviour
 
     void Start()
     {
-        transform.parent.GetComponent<Unit>().onAttack.AddListener(PlayAttackAnimationByDir);
     }
     /// <summary>
     /// 根据攻击方向播放不同的攻击动画
     /// </summary>
-    private void PlayAttackAnimationByDir(Vector2 attackDir)
+    public void PlayAttackAnimationByDir(Vector2 attackDir)
     {
         var angle = Mathf.Atan2(attackDir.y, attackDir.x) * Mathf.Rad2Deg;
 
@@ -42,6 +42,16 @@ public class AnimaitionHandler : MonoBehaviour
                 animator.Play(attackAnimationName_DiagonalDown);
                 break;
         }
+    }
+
+    public void SetIdleOrMove(bool isMove)
+    {
+        animator.SetBool("isRun", isMove);
+    }
+
+    public void Flip(bool isflip)
+    {
+        spriteRenderer.flipX = isflip;
     }
 
 }

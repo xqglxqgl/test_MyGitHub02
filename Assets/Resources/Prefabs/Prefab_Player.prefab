@@ -73,5 +73,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f10d47bd597449179abc43d6b123718, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  property: {fileID: 0}
+  onAttack:
+    m_PersistentCalls:
+      m_Calls: []
+  currentHp: 0
   rigidBody: {fileID: 28608193025884788}
-  speed: 5

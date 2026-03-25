@@ -163,6 +163,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 4659926808177938036}
+  spriteRenderer: {fileID: 2415328843798076196}
   attackAnimationName_Up: Attack_Up
   attackAnimationName_Down: Attack_Down
   attackAnimationName_Horizontal: Attack_Horizontal

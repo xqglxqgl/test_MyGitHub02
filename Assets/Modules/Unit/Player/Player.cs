@@ -8,9 +8,8 @@ using UnityEngine.Events;
 public class Player : Unit
 {
     [SerializeField] Rigidbody2D rigidBody;
-    private SpriteRenderer spriteRenderer;
     private GameObject view;
-    private Animator viewAnimator;
+    private AnimationHandler animationHandler;
 
     private Unit target;
     private Vector2 attackDir;
@@ -22,8 +21,7 @@ public class Player : Unit
         this.view.transform.SetParent(this.transform, false);
         this.view.transform.localPosition = Vector3.zero;
 
-        this.viewAnimator = this.view.GetComponent<Animator>();
-        this.spriteRenderer = this.view.GetComponent<SpriteRenderer>();
+        this.animationHandler = this.view.GetComponent<AnimationHandler>();
     }
     public override void InitProperty(string propertyKey)
     {
@@ -57,12 +55,12 @@ public class Player : Unit
     {
         if (InputManager.Instance.MovementDir == Vector2.zero)
         {
-            viewAnimator.SetBool("isRun", false);
+            animationHandler.SetIdleOrMove(false);
             rigidBody.velocity = Vector2.zero;
         }
         else
         {
-            viewAnimator.SetBool("isRun", true);
+            animationHandler.SetIdleOrMove(true);
         }
     }
     /// <summary>
@@ -76,7 +74,7 @@ public class Player : Unit
         var attackDir = target.transform.position - transform.position;
         if (distance <= property.attackRange)
         {
-            onAttack?.Invoke(attackDir);
+            animationHandler.PlayAttackAnimationByDir(attackDir);
         }
     }
 
@@ -103,12 +101,12 @@ public class Player : Unit
                 var dir = target.transform.position - transform.position;
                 if (dir.x > 0)
                 {
-                    spriteRenderer.flipX = false;
+                    animationHandler.Flip(false);
                     return;
                 }
                 else if (dir.x < 0)
                 {
-                    spriteRenderer.flipX = true;
+                    animationHandler.Flip(true);
                     return;
                 }
             }
@@ -119,11 +117,11 @@ public class Player : Unit
         //没有敌人则根据输入方向判断是否需要翻转
         if (InputManager.Instance.MovementDir.x > 0)
         {
-            spriteRenderer.flipX = false;
+            animationHandler.Flip(false);
         }
         else if (InputManager.Instance.MovementDir.x < 0)
         {
-            spriteRenderer.flipX = true;
+            animationHandler.Flip(true);
         }
     }
 
