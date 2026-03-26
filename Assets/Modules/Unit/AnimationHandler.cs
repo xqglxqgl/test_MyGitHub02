@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class AnimationHandler : MonoBehaviour
 {
@@ -60,6 +61,15 @@ public class AnimationHandler : MonoBehaviour
     }
 
 
+    public void BeHit()
+    {
+        // 被击打了闪红一下
+        spriteRenderer.DOColor(Color.red, 0.1f).OnComplete(() =>
+        {
+            spriteRenderer.DOColor(Color.white, 0.1f);
+        });
+    }
+
     //AnimationEvent: 射击
     private void OnShoot()
     {
@@ -70,5 +80,7 @@ public class AnimationHandler : MonoBehaviour
     {
         onMeleeAttack?.Invoke();
     }
+
+
 
 }

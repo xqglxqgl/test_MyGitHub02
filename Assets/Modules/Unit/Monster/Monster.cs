@@ -8,8 +8,7 @@ public class Monster : Unit
     [SerializeField] float speed;
     
     private GameObject view;
-
-    private Animator viewAnimator;
+    private AnimationHandler animationHandler;
 
     public override void OnCreateView(string viewKey)
     {
@@ -18,12 +17,17 @@ public class Monster : Unit
         this.view.transform.SetParent(this.transform, false);
         this.view.transform.localPosition = Vector3.zero;
 
-        this.viewAnimator = this.view.GetComponent<Animator>();
+        this.animationHandler = this.view.GetComponent<AnimationHandler>();
     }
     public override void InitProperty(string propertyKey)
     {
         this.property = AssetManager.Instance.LoadAsset<Property>(propertyKey);
         this.currentHp = this.property.maxHp;
+    }
+
+    public override void TakeDamage(float damage)
+    {
+        animationHandler.BeHit();
     }
     private void FixedUpdate()
     {

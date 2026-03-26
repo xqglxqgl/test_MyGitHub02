@@ -7,9 +7,13 @@ using UnityEngine.Events;
 
 public class Player : Unit
 {
-    [SerializeField] private List<AnimationClip> shootAnimationClips;
-    [SerializeField] private List<AnimationClip> meleeAttackAnimationClips;
     [SerializeField] Rigidbody2D rigidBody;
+    [SerializeField] Transform attackPot_Right;
+    [SerializeField] Transform attackPot_Left;
+    [SerializeField] Transform attackPot_Up;
+    [SerializeField] Transform attackPot_Down;
+
+
     private GameObject view;
     private AnimationHandler animationHandler;
     private Unit target;
@@ -24,11 +28,17 @@ public class Player : Unit
         this.animationHandler = this.view.GetComponent<AnimationHandler>();
         // 初始化动画事件
         animationHandler.onShoot += OutShootArrow;
+        animationHandler.onMeleeAttack += ActiveAttackPoint;
     }
     public override void InitProperty(string propertyKey)
     {
         this.property = AssetManager.Instance.LoadAsset<Property>(propertyKey);
         this.currentHp = this.property.maxHp;
+    }
+
+    public override void TakeDamage(float damage)
+    {
+        animationHandler.BeHit();
     }
 
     private void AutoLockTarget()
@@ -126,8 +136,8 @@ public class Player : Unit
     }
 
 
-    
-    public void OutShootArrow()
+
+    private void OutShootArrow()
     {
         var prefab = AssetPathUtility.ItemView_ArrowP;
         var owner = transform.GetComponent<Player>();
@@ -146,5 +156,48 @@ public class Player : Unit
         arrow.outShootPos = position;
         arrowGo.transform.position = position;
         arrowGo.transform.right = dir;
+    }
+
+    private void ActiveAttackPoint()
+    {
+        var attackDir = target.transform.position - transform.position;
+        var angle = Mathf.Atan2(attackDir.y, attackDir.x) * Mathf.Rad2Deg;
+        switch (angle)
+        {
+            case float a when a >= -30 && a < 30:
+                SlashUnitsInRange(attackPot_Right);
+                break;
+            case float a when  a >= 150 || a < -150:
+                SlashUnitsInRange(attackPot_Left);
+                break;
+            case float a when a >= 60 && a < 120:
+                SlashUnitsInRange(attackPot_Up);
+                break;
+            case float a when a >= -120 && a < -60:
+                SlashUnitsInRange(attackPot_Down);
+                break;
+            case float a when a >= 30 && a < 60 || a >= 120 && a < 150:
+                SlashUnitsInRange(attackPot_Up);
+                break;
+            case float a when a >= -150 && a < -120 || a >= -60 && a < -30:
+                SlashUnitsInRange(attackPot_Down);
+                break;
+        }
+    }
+
+    private void SlashUnitsInRange(Transform attackPoint)
+    {
+        var range = 1.2f;//击打的范围,目前是写死的,后续可以根据属性动态调整
+        var UnitsInRange = UnitManager.Instance.GetUnitsInRange(attackPoint.position, LayerMask.GetMask("Monster"), range);
+        foreach (var unit in UnitsInRange)
+        {
+            unit.TakeDamage(property.damage);
+        }
+    }
+
+
+    private void OnDisable()
+    {
+        animationHandler.onShoot -= OutShootArrow;
     }
 }

@@ -12,7 +12,7 @@ public class UnitManager : Singleton<UnitManager>
     }
 
 
-    public Unit CreatePlayer(string viewPrefab,string propertyKey)
+    public Unit CreatePlayer(string viewPrefab, string propertyKey)
     {
         var playerGo = Pool.Instance.Spawn(AssetPathUtility.Unit_Player);
         var player = playerGo.GetComponent<Player>();
@@ -23,7 +23,7 @@ public class UnitManager : Singleton<UnitManager>
         return player;
     }
 
-    public Unit CreateMonster(string viewPrefab,string propertyKey)
+    public Unit CreateMonster(string viewPrefab, string propertyKey)
     {
         var monsterGo = Pool.Instance.Spawn(AssetPathUtility.Unit_Monster);
         var monster = monsterGo.GetComponent<Monster>();
@@ -33,14 +33,18 @@ public class UnitManager : Singleton<UnitManager>
         return monster;
     }
 
-    public Unit GetNearestTarget(Unit self,LayerMask layer)
+
+    /// <summary>
+    /// 获取最近的目标单位
+    /// </summary>
+    public Unit GetNearestTarget(Unit self, LayerMask layer)
     {
         Unit nearestTarget = null;
         var nearestDistance = Mathf.Infinity;
         foreach (var unit in this.unitList)
         {
-            if((1<<unit.gameObject.layer & layer.value) == 0)continue;
-        
+            if ((1 << unit.gameObject.layer & layer.value) == 0) continue;
+
             var targetDistance = Vector2.Distance(self.transform.position, unit.transform.position);
             if (nearestTarget == null || targetDistance < nearestDistance)
             {
@@ -49,6 +53,23 @@ public class UnitManager : Singleton<UnitManager>
             }
         }
         return nearestTarget;
+    }
+
+    /// <summary>
+    /// 获取范围内的所有单位
+    /// </summary>
+    public List<Unit> GetUnitsInRange(Vector2 position, LayerMask layer, float range)
+    {
+        var nearUnitList = new List<Unit>();
+        foreach (var unit in this.unitList)
+        {
+            if ((1 << unit.gameObject.layer & layer.value) == 0) continue;
+
+            var targetDistance = Vector2.Distance(position, unit.transform.position);
+            if (targetDistance <= range)
+                nearUnitList.Add(unit);
+        }
+        return nearUnitList;
     }
 
 }
