@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,10 @@ public class AnimationHandler : MonoBehaviour
     [SerializeField] private string attackAnimationName_Horizontal;
     [SerializeField] private string attackAnimationName_DiagonalUp;
     [SerializeField] private string attackAnimationName_DiagonalDown;
+
+
+    public Action onShoot;
+    public Action onMeleeAttack;
 
     void Start()
     {
@@ -52,6 +57,18 @@ public class AnimationHandler : MonoBehaviour
     public void Flip(bool isflip)
     {
         spriteRenderer.flipX = isflip;
+    }
+
+
+    //AnimationEvent: 射击
+    private void OnShoot()
+    {
+        onShoot?.Invoke();
+    }
+    //AnimationEvent: 近战攻击
+    private void OnMeleeAttack()
+    {
+        onMeleeAttack?.Invoke();
     }
 
 }

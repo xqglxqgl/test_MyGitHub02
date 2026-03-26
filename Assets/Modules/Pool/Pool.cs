@@ -36,6 +36,7 @@ public class Pool : Singleton<Pool>
         {
             var result = this.pools[key].Dequeue();
             this.instances.Add(result, key);
+            result.SetActive(true);
             result.transform.SetParent(parent, false);
             return result;
         }
@@ -61,6 +62,7 @@ public class Pool : Singleton<Pool>
         }
         else
         {
+            Debug.Log($"[Pool] {target.name} not found, Destroy it");
             // 不是对象池的对象
             GameObject.Destroy(target);
         }

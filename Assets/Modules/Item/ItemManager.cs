@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemManager : Singleton<UnitManager>
+public class ItemManager : Singleton<ItemManager>
 {
     private List<Item> itemList;
     void Awake()
@@ -10,16 +10,11 @@ public class ItemManager : Singleton<UnitManager>
         this.itemList = new();
     }
 
-    public Item CreateArrow(string viewPrefab, Vector2 position,float damage,float speed,Vector2 dir)
+    public Item SpawnArrow(string viewPrefab)
     {
         var arrowGo = Pool.Instance.Spawn(AssetPathUtility.Item_Arrow);
         var arrow = arrowGo.GetComponent<Arrow>();
         arrow.OnCreateView(viewPrefab);
-        arrow.InitProperty();
-        arrow.transform.position = position;
-        arrow.damage = damage;
-        arrow.speed = speed;
-        arrow.dir = dir;
         this.itemList.Add(arrow);
 
         return arrow;

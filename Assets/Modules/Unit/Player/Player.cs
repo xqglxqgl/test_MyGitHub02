@@ -7,6 +7,8 @@ using UnityEngine.Events;
 
 public class Player : Unit
 {
+    [SerializeField] private List<AnimationClip> shootAnimationClips;
+    [SerializeField] private List<AnimationClip> meleeAttackAnimationClips;
     [SerializeField] Rigidbody2D rigidBody;
     private GameObject view;
     private AnimationHandler animationHandler;
@@ -20,6 +22,8 @@ public class Player : Unit
         this.view.transform.localPosition = Vector2.zero;
 
         this.animationHandler = this.view.GetComponent<AnimationHandler>();
+        // 初始化动画事件
+        animationHandler.onShoot += OutShootArrow;
     }
     public override void InitProperty(string propertyKey)
     {
@@ -121,4 +125,26 @@ public class Player : Unit
         }
     }
 
+
+    
+    public void OutShootArrow()
+    {
+        var prefab = AssetPathUtility.ItemView_ArrowP;
+        var owner = transform.GetComponent<Player>();
+        var offset = new Vector2(0f, -0.16f);
+        var position = (Vector2)transform.position + offset;
+        var dir = (target.transform.position - transform.position).normalized;
+        // 生成箭矢
+        var arrowGo = ItemManager.Instance.SpawnArrow(prefab);
+        var arrow = arrowGo.GetComponent<Arrow>();
+        // 初始化箭矢属性
+        arrow.owner = owner;
+        arrow.Speed = 10f;
+        arrow.maxFlyDistance = 8f;
+        arrow.Damage = property.damage;
+        arrow.Dir = dir;
+        arrow.outShootPos = position;
+        arrowGo.transform.position = position;
+        arrowGo.transform.right = dir;
+    }
 }

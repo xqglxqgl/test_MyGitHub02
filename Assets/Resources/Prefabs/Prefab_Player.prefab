@@ -74,8 +74,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   property: {fileID: 0}
-  onAttack:
-    m_PersistentCalls:
-      m_Calls: []
   currentHp: 0
+  shootAnimationClips:
+  - {fileID: 7400000, guid: d0bf0a2583587224ea636402ccdc6093, type: 2}
+  - {fileID: 7400000, guid: d74881ae454897e4faa651361c89b6ea, type: 2}
+  - {fileID: 7400000, guid: fdb57b69bbe25324d88e3f1207b529bd, type: 2}
+  - {fileID: 7400000, guid: 89afa4a1815832044a842a7d2a327a00, type: 2}
+  - {fileID: 7400000, guid: b8ab7cac93060f148a391d18f30857fa, type: 2}
+  meleeAttackAnimationClips:
+  - {fileID: 7400000, guid: cd4a092bfc6eb784790ba07432299936, type: 2}
+  - {fileID: 7400000, guid: 1345bf66844d5ee4b9dfb1c219a0f854, type: 2}
+  - {fileID: 7400000, guid: 4853cef88707e2a49bc479b279608bc9, type: 2}
   rigidBody: {fileID: 28608193025884788}

@@ -5,36 +5,34 @@ using UnityEngine;
 public class Arrow : Item
 {
     private GameObject View;
-    [SerializeField]private Rigidbody2D rigidBody;
+    [SerializeField] private Rigidbody2D rigidBody;
 
-    public float speed;
-    public float damage;
-    public Vector2 dir;
+    public float Speed { get; set; }
+    public float Damage { get; set; }
+    public Vector2 Dir { get; set; }
 
-    private float lifeTime = 2f;
-    private float dieTime;
+    public Vector2 outShootPos;
+    public float maxFlyDistance;
 
-    private void OnEnable()
-    {
-        dieTime = Time.time + lifeTime;
-    }
+
+
     public override void OnCreateView(string viewKey)
     {
         this.View = Pool.Instance.Spawn(viewKey);
         this.View.transform.SetParent(this.transform);
         this.View.transform.localPosition = Vector2.zero;
     }
-    public override void InitProperty()
-    {
-        transform.right = dir;//箭矢头方向指向射击方向
-    }
 
     void Update()
     {
-        if(Time.time >= dieTime)
+        var currentPos = rigidBody.position;
+        var distance = Vector2.Distance(currentPos, outShootPos);
+        if (distance > maxFlyDistance)
         {
+            Pool.Instance.Recycle(this.View);
             Pool.Instance.Recycle(this.gameObject);
         }
+
     }
 
     void FixedUpdate()
@@ -45,7 +43,7 @@ public class Arrow : Item
     private void UpdateMovement()
     {
         var currentPos = rigidBody.position;
-        var moveDir = speed * dir * Time.fixedDeltaTime;
+        var moveDir = Speed * Dir * Time.fixedDeltaTime;
         rigidBody.MovePosition(currentPos + moveDir);
     }
 }

@@ -26,8 +26,7 @@ public class Battel : MonoBehaviour
     }
     void Start()
     {
-        PlayerManager.instance.onHpChanged += UpdateHp;
-        PlayerManager.instance.onHpIsLow += OnPlayerHpLow;
+
     }
 
     void Update()
