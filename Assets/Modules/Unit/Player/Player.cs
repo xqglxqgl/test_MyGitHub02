@@ -17,7 +17,7 @@ public class Player : Unit
     private GameObject view;
     private AnimationHandler animationHandler;
     private Unit target;
-
+#region 重写基类Unit的方法
     public override void OnCreateView(string viewKey)
     {
         var viewInstance = Pool.Instance.Spawn(viewKey);
@@ -32,14 +32,25 @@ public class Player : Unit
     }
     public override void InitProperty(string propertyKey)
     {
+        this.gameObject.layer = LayerMask.NameToLayer("Player");// 设置为Player层,确保作为Player参与游戏逻辑
         this.property = AssetManager.Instance.LoadAsset<Property>(propertyKey);
-        this.currentHp = this.property.maxHp;
+        this.CurrentHp = this.property.maxHp;
     }
 
     public override void TakeDamage(float damage)
     {
         animationHandler.BeHit();
+        this.CurrentHp -= damage;
     }
+    public override void OnDie()
+    {
+        base.OnDie();
+        Pool.Instance.Recycle(this.view);
+    }
+#endregion
+
+
+
 
     private void AutoLockTarget()
     {
@@ -196,7 +207,9 @@ public class Player : Unit
     }
 
 
-    private void OnDisable()
+
+
+    void OnDisable()
     {
         animationHandler.onShoot -= OutShootArrow;
     }

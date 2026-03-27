@@ -62,7 +62,7 @@ public class Pool : Singleton<Pool>
         }
         else
         {
-            Debug.Log($"[Pool] {target.name} not found, Destroy it");
+            Debug.Log($"[instances] {target.name} not found, Destroy it,不是对象池的对象!");
             // 不是对象池的对象
             GameObject.Destroy(target);
         }
