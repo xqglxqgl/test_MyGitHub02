@@ -78,7 +78,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   property: {fileID: 0}
-  currentHp: 0
   rigidBody: {fileID: 28608193025884788}
   attackPot_Right: {fileID: 5388357154700071793}
   attackPot_Left: {fileID: 1920754686683622661}

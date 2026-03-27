@@ -19,3 +19,6 @@ MonoBehaviour:
   attackSpeedLevel: 1
   attackInterval: 1
   maxHp: 100
+  pierceCount: 1
+  arrowSpeed: 4
+  arrowMaxFlyDistance: 5

@@ -13,9 +13,13 @@ MonoBehaviour:
   m_Name: Property_PArcher
   m_EditorClassIdentifier: 
   level: 1
-  damage: 10
+  damage: 30
   moveSpeed: 5
   attackRange: 6
   attackSpeedLevel: 1
   attackInterval: 1.5
   maxHp: 100
+  pierceCount: 3
+  arrowSpeed: 10
+  arrowMaxFlyDistance: 8
+  damageRange: 1.5

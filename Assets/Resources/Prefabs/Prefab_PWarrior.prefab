@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 837261664466905270}
   - component: {fileID: 2415328843798076196}
   - component: {fileID: 4659926808177938036}
-  - component: {fileID: 8618825158968860256}
+  - component: {fileID: 6609327653315390998}
   - component: {fileID: 6116612329858079400}
-  m_Layer: 6
+  m_Layer: 30
   m_HasEditorInfo: 1
   m_Name: Prefab_PWarrior
-  m_TagString: Player_Archer
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -115,7 +115,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!70 &8618825158968860256
+--- !u!70 &6609327653315390998
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -147,8 +147,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.016627014, y: -0.048400342}
-  m_Size: {x: 0.6384156, y: 0.9941751}
+  m_Offset: {x: -0.006798506, y: -0.032878637}
+  m_Size: {x: 0.683846, y: 1.0577502}
   m_Direction: 0
 --- !u!114 &6116612329858079400
 MonoBehaviour:

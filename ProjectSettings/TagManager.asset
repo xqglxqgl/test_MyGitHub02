@@ -41,8 +41,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - PlayerView
+  - MonsterView
   m_SortingLayers:
   - name: Default
     uniqueID: 0

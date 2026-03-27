@@ -17,6 +17,7 @@ public class Player : Unit
     private GameObject view;
     private AnimationHandler animationHandler;
     private Unit target;
+    private Vector2 attackDir;
 #region 重写基类Unit的方法
     public override void OnCreateView(string viewKey)
     {
@@ -27,8 +28,8 @@ public class Player : Unit
 
         this.animationHandler = this.view.GetComponent<AnimationHandler>();
         // 初始化动画事件
-        animationHandler.onShoot += OutShootArrow;
-        animationHandler.onMeleeAttack += ActiveAttackPoint;
+        this.animationHandler.onShoot += OutShootArrow;
+        this.animationHandler.onMeleeAttack += ActiveAttackPoint;
     }
     public override void InitProperty(string propertyKey)
     {
@@ -39,7 +40,7 @@ public class Player : Unit
 
     public override void TakeDamage(float damage)
     {
-        animationHandler.BeHit();
+        this.animationHandler.BeHit();
         this.CurrentHp -= damage;
     }
     public override void OnDie()
@@ -55,7 +56,11 @@ public class Player : Unit
     private void AutoLockTarget()
     {
         // 玩家自动锁定目标
-        target = UnitManager.Instance.GetNearestTarget(this, LayerMask.GetMask("Monster"));
+        this.target = UnitManager.Instance.GetNearestTarget(this, LayerMask.GetMask("Monster"));
+        if (this.target != null)
+        {
+            this.attackDir = this.target.transform.position - this.transform.position;
+        }
     }
 
     void Update()
@@ -78,12 +83,12 @@ public class Player : Unit
     {
         if (InputManager.Instance.MovementDir == Vector2.zero)
         {
-            animationHandler.SetIdleOrMove(false);
-            rigidBody.velocity = Vector2.zero;
+            this.animationHandler.SetIdleOrMove(false);
+            this.rigidBody.velocity = Vector2.zero;
         }
         else
         {
-            animationHandler.SetIdleOrMove(true);
+            this.animationHandler.SetIdleOrMove(true);
         }
     }
     /// <summary>
@@ -91,13 +96,12 @@ public class Player : Unit
     /// </summary>
     private void JudgeAttack()
     {
-        if (target == null) return;
+        if (this.target == null) return;
 
-        var distance = Vector2.Distance(this.transform.position, target.transform.position);
-        var attackDir = target.transform.position - transform.position;
-        if (distance <= property.attackRange)
+        var distance = Vector2.Distance(this.transform.position, this.target.transform.position);
+        if (distance <= this.property.attackRange)
         {
-            animationHandler.PlayAttackAnimationByDir(attackDir);
+            this.animationHandler.PlayAttackAnimationByDir(this.attackDir);
         }
     }
 
@@ -106,28 +110,28 @@ public class Player : Unit
     private void UpdateMovment()
     {
         var inputDir = InputManager.Instance.MovementDir;
-        var currentPos = rigidBody.position;
-        var moveDir = property.moveSpeed * Time.fixedDeltaTime * inputDir;
-        rigidBody.MovePosition(currentPos + moveDir);
+        var currentPos = this.rigidBody.position;
+        var moveDir = this.property.moveSpeed * Time.fixedDeltaTime * inputDir;
+        this.rigidBody.MovePosition(currentPos + moveDir);
     }
 
     private void JudgeFlip()
     {
         // 如果攻击距离内有敌人则优先根据敌人位置判断是否需要翻转
-        if (target != null)
+        if (this.target != null)
         {
-            var distance = Vector2.Distance(this.transform.position, target.transform.position);
-            if (distance < property.attackRange + 1f)//增加1f的缓冲距离
+            var distance = Vector2.Distance(this.transform.position, this.target.transform.position);
+            if (distance < this.property.attackRange + 1f)//增加1f的缓冲距离
             {
-                var dir = target.transform.position - transform.position;
+                var dir = this.target.transform.position - this.transform.position;
                 if (dir.x > 0)
                 {
-                    animationHandler.Flip(false);
+                    this.animationHandler.Flip(false);
                     return;
                 }
                 else if (dir.x < 0)
                 {
-                    animationHandler.Flip(true);
+                    this.animationHandler.Flip(true);
                     return;
                 }
             }
@@ -138,11 +142,11 @@ public class Player : Unit
         //没有敌人则根据输入方向判断是否需要翻转
         if (InputManager.Instance.MovementDir.x > 0)
         {
-            animationHandler.Flip(false);
+            this.animationHandler.Flip(false);
         }
         else if (InputManager.Instance.MovementDir.x < 0)
         {
-            animationHandler.Flip(true);
+            this.animationHandler.Flip(true);
         }
     }
 
@@ -151,58 +155,58 @@ public class Player : Unit
     private void OutShootArrow()
     {
         var prefab = AssetPathUtility.ItemView_ArrowP;
-        var owner = transform.GetComponent<Player>();
+        var owner = this.transform.GetComponent<Player>();
         var offset = new Vector2(0f, -0.16f);
-        var position = (Vector2)transform.position + offset;
-        var dir = (target.transform.position - transform.position).normalized;
+        var position = (Vector2)this.transform.transform.position + offset;
+        var dir = this.attackDir.normalized;
         // 生成箭矢
         var arrowGo = ItemManager.Instance.SpawnArrow(prefab);
         var arrow = arrowGo.GetComponent<Arrow>();
         // 初始化箭矢属性
         arrow.owner = owner;
-        arrow.Speed = 10f;
-        arrow.maxFlyDistance = 8f;
-        arrow.Damage = property.damage;
+        arrow.TargetLayer = LayerMask.GetMask("MonsterView");
+        arrow.Speed = this.property.arrowSpeed;
+        arrow.MaxFlyDistance = this.property.arrowMaxFlyDistance;
+        arrow.PierceCount = this.property.pierceCount;
+        arrow.Damage = this.property.damage;
         arrow.Dir = dir;
-        arrow.outShootPos = position;
+        arrow.OutShootPos = position;
         arrowGo.transform.position = position;
         arrowGo.transform.right = dir;
     }
-
+    
     private void ActiveAttackPoint()
     {
-        var attackDir = target.transform.position - transform.position;
-        var angle = Mathf.Atan2(attackDir.y, attackDir.x) * Mathf.Rad2Deg;
+        var angle = Mathf.Atan2(this.attackDir.y, this.attackDir.x) * Mathf.Rad2Deg;
         switch (angle)
         {
             case float a when a >= -30 && a < 30:
-                SlashUnitsInRange(attackPot_Right);
+                SlashUnitsInRange(this.attackPot_Right);
                 break;
             case float a when  a >= 150 || a < -150:
-                SlashUnitsInRange(attackPot_Left);
+                SlashUnitsInRange(this.attackPot_Left);
                 break;
             case float a when a >= 60 && a < 120:
-                SlashUnitsInRange(attackPot_Up);
+                SlashUnitsInRange(this.attackPot_Up);
                 break;
             case float a when a >= -120 && a < -60:
-                SlashUnitsInRange(attackPot_Down);
+                SlashUnitsInRange(this.attackPot_Down);
                 break;
             case float a when a >= 30 && a < 60 || a >= 120 && a < 150:
-                SlashUnitsInRange(attackPot_Up);
+                SlashUnitsInRange(this.attackPot_Up);
                 break;
             case float a when a >= -150 && a < -120 || a >= -60 && a < -30:
-                SlashUnitsInRange(attackPot_Down);
+                SlashUnitsInRange(this.attackPot_Down);
                 break;
         }
     }
 
     private void SlashUnitsInRange(Transform attackPoint)
     {
-        var range = 1.2f;//击打的范围,目前是写死的,后续可以根据属性动态调整
-        var UnitsInRange = UnitManager.Instance.GetUnitsInRange(attackPoint.position, LayerMask.GetMask("Monster"), range);
+        var UnitsInRange = UnitManager.Instance.GetUnitsInRange(attackPoint.position, LayerMask.GetMask("Monster"), this.property.damageRange);
         foreach (var unit in UnitsInRange)
         {
-            unit.TakeDamage(property.damage);
+            unit.TakeDamage(this.property.damage);
         }
     }
 
@@ -211,6 +215,6 @@ public class Player : Unit
 
     void OnDisable()
     {
-        animationHandler.onShoot -= OutShootArrow;
+        this.animationHandler.onShoot -= OutShootArrow;
     }
 }
