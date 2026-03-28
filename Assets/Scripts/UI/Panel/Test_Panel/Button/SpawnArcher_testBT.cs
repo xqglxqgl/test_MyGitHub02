@@ -14,6 +14,6 @@ public class SpawnArcher_testBT : MonoBehaviour
     }
     public void SpawnObjGo()
     {
-        var archer = UnitManager.Instance.CreateMonster(AssetPathUtility.UnitView_MArcher,AssetPathUtility.Property_MArcher);
+        var archer = UnitManager.Instance.CreateMonster(AssetPathUtility.Unit_MArcher,AssetPathUtility.UnitView_MArcher,AssetPathUtility.Property_MArcher);
     }
 }

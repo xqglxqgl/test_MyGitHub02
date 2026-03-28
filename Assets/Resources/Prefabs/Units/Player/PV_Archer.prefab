@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 837261664466905270}
   - component: {fileID: 2415328843798076196}
   - component: {fileID: 4659926808177938036}
-  - component: {fileID: 6609327653315390998}
-  - component: {fileID: 6116612329858079400}
+  - component: {fileID: 380088849570265710}
+  - component: {fileID: 6670463739979580764}
   m_Layer: 30
   m_HasEditorInfo: 1
-  m_Name: Prefab_PWarrior
+  m_Name: PV_Archer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -1719051124, guid: e798df5fa90874847b826fcfa2e1e4a2, type: 3}
+  m_Sprite: {fileID: 1974290646, guid: 9fa03b719a9ea124eb9ceeeb83e30e4c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -102,7 +102,7 @@ Animator:
   m_GameObject: {fileID: 1094944783890610783}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 0114f2f2f0cd2474bbb545e1af89dfbd, type: 2}
+  m_Controller: {fileID: 9100000, guid: 3aa855ca5ea315c4382d41ff9d3e566b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_UpdateFrequencyMode: 0
@@ -115,7 +115,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!70 &6609327653315390998
+--- !u!70 &380088849570265710
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -147,10 +147,10 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.006798506, y: -0.032878637}
-  m_Size: {x: 0.683846, y: 1.0577502}
+  m_Offset: {x: -0.020026207, y: -0.079550385}
+  m_Size: {x: 0.7991133, y: 0.9655378}
   m_Direction: 0
---- !u!114 &6116612329858079400
+--- !u!114 &6670463739979580764
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -164,8 +164,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 4659926808177938036}
   spriteRenderer: {fileID: 2415328843798076196}
-  attackAnimationName_Up: Attack_Up
-  attackAnimationName_Down: Attack_Down
-  attackAnimationName_Horizontal: Attack_Horizontal
-  attackAnimationName_DiagonalUp: Attack_Up
-  attackAnimationName_DiagonalDown: Attack_Down
+  attackAnimationName_Up: Shoot_Up
+  attackAnimationName_Down: Shoot_Down
+  attackAnimationName_Horizontal: Shoot_Horizontal
+  attackAnimationName_DiagonalUp: Shoot_Diagonal_Up
+  attackAnimationName_DiagonalDown: Shoot_Diagonal_Down

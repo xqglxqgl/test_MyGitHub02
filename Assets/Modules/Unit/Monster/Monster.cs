@@ -5,20 +5,12 @@ using UnityEngine;
 public class Monster : Unit
 {
     [SerializeField] Rigidbody2D rigidbody;
-    [SerializeField] float speed;
-    
-    private GameObject view;
-    private AnimationHandler animationHandler;
-#region 重写基类Unit的方法
-    public override void OnCreateView(string viewKey)
-    {
-        var viewInstance = Pool.Instance.Spawn(viewKey);
-        this.view = viewInstance;
-        this.view.transform.SetParent(this.transform, false);
-        this.view.transform.localPosition = Vector3.zero;
+    protected Unit target { get; set; }
+    protected Vector2 attackDir { get; set; }
+    protected GameObject view { get; set; }
+    protected AnimationHandler animationHandler { get; set; }
 
-        this.animationHandler = this.view.GetComponent<AnimationHandler>();
-    }
+    #region 重写基类Unit的方法
     public override void InitProperty(string propertyKey)
     {
         this.gameObject.layer = LayerMask.NameToLayer("Monster");// 设置为Mosnter层,确保作为Monster参与游戏逻辑
@@ -31,13 +23,7 @@ public class Monster : Unit
         animationHandler.BeHit();
         this.CurrentHp -= damage;
     }
-
-    public override void OnDie()
-    {
-        base.OnDie();
-        Pool.Instance.Recycle(this.view);
-    }
-#endregion
+    #endregion
 
     private void FixedUpdate()
     {

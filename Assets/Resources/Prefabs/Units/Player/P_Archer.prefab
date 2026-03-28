@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2108593587705984255}
   - component: {fileID: 28608193025884788}
-  - component: {fileID: -7951050108248193546}
-  m_Layer: 3
+  - component: {fileID: -4224738307201805359}
+  m_Layer: 6
   m_HasEditorInfo: 1
-  m_Name: Prefab_Monster
+  m_Name: P_Archer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61,7 +61,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &-7951050108248193546
+--- !u!114 &-4224738307201805359
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -70,9 +70,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 2210333031577612097}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d753edb6de4099f48a5f8fb86b629469, type: 3}
+  m_Script: {fileID: 11500000, guid: 654ba5c8a6162c842ada0aa47f393e74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   property: {fileID: 0}
-  rigidbody: {fileID: 28608193025884788}
-  speed: 3
+  rigidBody: {fileID: 28608193025884788}

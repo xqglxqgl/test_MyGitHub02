@@ -12,10 +12,10 @@ public class UnitManager : Singleton<UnitManager>
     }
 
 
-    public Unit CreatePlayer(string viewPrefab, string propertyKey)
+    public Unit CreatePlayer(string playerType,string viewPrefab, string propertyKey)
     {
-        var playerGo = Pool.Instance.Spawn(AssetPathUtility.Unit_Player);
-        var player = playerGo.GetComponent<Player>();
+        var playerGoj = Pool.Instance.Spawn(playerType);
+        var player = playerGoj.GetComponent<Player>();
         player.OnCreateView(viewPrefab);
         player.InitProperty(propertyKey);
         this.unitList.Add(player);
@@ -23,10 +23,10 @@ public class UnitManager : Singleton<UnitManager>
         return player;
     }
 
-    public Unit CreateMonster(string viewPrefab, string propertyKey)
+    public Unit CreateMonster(string monsterType,string viewPrefab, string propertyKey)
     {
-        var monsterGo = Pool.Instance.Spawn(AssetPathUtility.Unit_Monster);
-        var monster = monsterGo.GetComponent<Monster>();
+        var monsterGoj = Pool.Instance.Spawn(monsterType);
+        var monster = monsterGoj.GetComponent<Monster>();
         monster.OnCreateView(viewPrefab);
         monster.InitProperty(propertyKey);
         this.unitList.Add(monster);

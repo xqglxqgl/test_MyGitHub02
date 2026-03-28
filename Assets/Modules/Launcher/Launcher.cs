@@ -10,12 +10,15 @@ public class Launcher : MonoBehaviour
 
     private void PreparePool()
     {
-        CreateOnePool(AssetPathUtility.Unit_Player);
-        CreateOnePool(AssetPathUtility.UnitView_Archer);
-        CreateOnePool(AssetPathUtility.UnitView_Warrior);
-        CreateOnePool(AssetPathUtility.Unit_Monster);
+        CreateOnePool(AssetPathUtility.Unit_PArcher);
+        CreateOnePool(AssetPathUtility.Unit_PWarrior);
+        CreateOnePool(AssetPathUtility.UnitView_PArcher);
+        CreateOnePool(AssetPathUtility.UnitView_PWarrior);
+
+        CreateOnePool(AssetPathUtility.Unit_MArcher);
         CreateOnePool(AssetPathUtility.Unit_MGoblin);
         CreateOnePool(AssetPathUtility.UnitView_MArcher);
+        CreateOnePool(AssetPathUtility.UnitView_MGoblin);
 
         CreateOnePool(AssetPathUtility.Item_Arrow);
         CreateOnePool(AssetPathUtility.ItemView_ArrowP);

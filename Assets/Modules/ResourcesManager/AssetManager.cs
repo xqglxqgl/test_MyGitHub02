@@ -24,12 +24,19 @@ public class AssetManager : Singleton<AssetManager>
 
 public static class AssetPathUtility
 {
-    public const string Unit_Player = "Prefabs/Prefab_Player";
-    public const string UnitView_Archer = "Prefabs/Prefab_PArcher";
-    public const string UnitView_Warrior = "Prefabs/Prefab_PWarrior";
-    public const string Unit_Monster = "Prefabs/Prefab_Monster";
-    public const string Unit_MGoblin = "Prefabs/Prefab_MGoblin";
-    public const string UnitView_MArcher = "Prefabs/Prefab_MArcher";
+    public const string Unit_PArcher = "Prefabs/Units/Player/P_Archer";
+    public const string Unit_PWarrior = "Prefabs/Units/Player/P_Warrior";
+    public const string UnitView_PArcher = "Prefabs/Units/Player/PV_Archer";
+    public const string UnitView_PWarrior = "Prefabs/Units/Player/PV_Warrior";
+
+    public const string Unit_MArcher = "Prefabs/Units/Monster/M_Archer";
+    public const string Unit_MGoblin = "Prefabs/Units/Monster/M_Goblin";
+    public const string UnitView_MGoblin = "Prefabs/Units/Monster/MV_Goblin";
+    public const string UnitView_MArcher = "Prefabs/Units/Monster/MV_Archer";
+
+    public const string Item_Arrow = "Prefabs/Items/Arrow/Arrow";
+    public const string ItemView_ArrowP = "Prefabs/Items/Arrow/ArrowP";
+    public const string ItemView_ArrowM = "Prefabs/Items/Arrow/ArrowM";
 
 
 
@@ -39,8 +46,6 @@ public static class AssetPathUtility
     public const string Property_MArcher = "ScriptableObject/Property_MArcher";
 
 
-    public const string Item_Arrow = "Prefabs/Prefab_Arrow";
-    public const string ItemView_ArrowP = "Prefabs/Prefab_ArrowP";
-    public const string ItemView_ArrowM = "Prefabs/Prefab_ArrowM";
+
 
 }
