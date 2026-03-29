@@ -17,7 +17,8 @@ public class AnimationHandler : MonoBehaviour
     [SerializeField] private string attackAnimationName_DiagonalDown;
 
 
-    public Action onShoot;
+    public Action onBowRelease;
+    public Action onBowDraw;
     public Action onMeleeAttack;
 
     void Start()
@@ -71,10 +72,17 @@ public class AnimationHandler : MonoBehaviour
     }
 
     //AnimationEvent: 射击
-    private void OnShoot()
+    private void OnBowRelease()
     {
-        onShoot?.Invoke();
+        onBowRelease?.Invoke();
     }
+    private void OnBowDraw()
+    {
+        onBowDraw?.Invoke();
+    }
+
+    
+
     //AnimationEvent: 近战攻击
     private void OnMeleeAttack()
     {

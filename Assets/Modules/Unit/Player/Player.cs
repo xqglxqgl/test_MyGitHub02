@@ -62,8 +62,13 @@ public class Player : Unit
         var distance = Vector2.Distance(this.transform.position, this.target.transform.position);
         if (distance <= this.property.attackRange)
         {
-            this.animationHandler.PlayAttackAnimationByDir(this.attackDir);
+            this.Attack();
         }
+    }
+
+    protected void Attack()
+    {
+        this.animationHandler.PlayAttackAnimationByDir(this.attackDir);
     }
 
     protected void UpdateMovment()

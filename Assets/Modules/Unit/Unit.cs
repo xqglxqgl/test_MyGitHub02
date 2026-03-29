@@ -27,4 +27,5 @@ public class Unit : MonoBehaviour
     public virtual void OnCreateView(string viewKey) { }
     public virtual void InitProperty(string propertyKey) { }
     public virtual void TakeDamage(float damage) { }
+
 }

@@ -8484,7 +8484,6 @@ GameObject:
   - component: {fileID: 1772915976}
   - component: {fileID: 1772915975}
   - component: {fileID: 1772915978}
-  - component: {fileID: 1772915979}
   m_Layer: 0
   m_HasEditorInfo: 1
   m_Name: Virtual Camera
@@ -8561,14 +8560,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   virtualCamera: {fileID: 1772915975}
---- !u!81 &1772915979
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1772915974}
-  m_Enabled: 1
 --- !u!1 &1871704133
 GameObject:
   m_ObjectHideFlags: 0
