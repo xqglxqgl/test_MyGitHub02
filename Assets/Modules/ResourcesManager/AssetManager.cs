@@ -46,6 +46,35 @@ public static class AssetPathUtility
     public const string Property_MArcher = "ScriptableObject/Property_MArcher";
 
 
+#region 音频资源
+    //音频播放预制体
+    public const string ASPrefab_BGM = "Prefabs/Audio/BGM";
+    public const string ASPrefab_CombatSFX = "Prefabs/Audio/CombatSFX";
+    public const string ASPrefab_UISFX = "Prefabs/Audio/UISFX";
+    
+    // 战斗音效
+    public const string AC_Fight_ArrowHit = "Audio/Combat/Arrow_Hit";
+    public const string AC_Fight_BowDraw = "Audio/Combat/Bow_Draw";
+    public const string AC_Fight_BowRelease = "Audio/Combat/Bow_Release";
+    public const string AC_Fight_ClubHit = "Audio/Combat/Club_Hit";
+    public const string AC_Fight_ClubSwing = "Audio/Combat/Club_Swing";
+    public const string AC_Fight_Heal = "Audio/Combat/Heal";
+    public const string AC_Fight_Slashed = "Audio/Combat/Slashed";
+    public const string AC_Fight_SwordHit = "Audio/Combat/Sword_Hit";
+    public const string AC_Fight_SwordSwing = "Audio/Combat/Sword_Swing";
+
+    //UI音效
+    public const string AC_UI_BTClicky = "Audio/UI/BT_Clicky";
+    public const string AC_UI_BTMuffled = "Audio/UI/BT_Muffled";
+    public const string AC_UI_CorrectChime = "Audio/UI/CorrectChime";
+    public const string AC_UI_ErrorChime = "Audio/UI/ErrorChime";
+    public const string AC_UI_Drink = "Audio/UI/Drink";
+    public const string AC_UI_HeavyJingle = "Audio/UI/HeavyJingle";
+    public const string AC_UI_LightJingle = "Audio/UI/LightJingle";
+    public const string AC_UI_MainMenu = "Audio/UI/MainMenu";
+    public const string AC_UI_Pause = "Audio/UI/Pause";
+
+#endregion
 
 
 }

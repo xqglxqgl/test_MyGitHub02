@@ -6,7 +6,7 @@ public class Arrow : Item
 {
     private GameObject View;
     [SerializeField] Rigidbody2D rigidBody;
-    public LayerMask TargetLayer{ get; set; }
+    public LayerMask TargetLayer { get; set; }
 
     public float Speed { get; set; }//飞行速度
     public float Damage { get; set; }//伤害值
@@ -57,8 +57,19 @@ public class Arrow : Item
         if (this.TargetLayer.value == (1 << collision.gameObject.layer))
         {
             collision.transform.parent.GetComponent<Unit>().TakeDamage(Damage);
-            this.PierceCount--;//穿透次数减少1
+            PlayArrowHitSFX();
+             this.PierceCount--;//穿透次数减少1
             if (this.PierceCount <= 0) Die();//穿透次数为0时，箭矢消失
         }
+    }
+
+    //播放箭矢击中音效
+    private void PlayArrowHitSFX()
+    {
+        var tempAudioSource = AudioManager.Instance.CreateAudioSource(AssetPathUtility.ASPrefab_CombatSFX, AssetPathUtility.AC_Fight_ArrowHit);
+        tempAudioSource.transform.position = this.transform.position;
+        tempAudioSource.volume = 0.2f;
+        tempAudioSource.Play();
+        Pool.Instance.Recycle(tempAudioSource.gameObject, tempAudioSource.clip.length);
     }
 }

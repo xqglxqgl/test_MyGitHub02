@@ -9,7 +9,7 @@ public class MGoblin : Monster
     [SerializeField] Transform attackPot_Left;
     [SerializeField] Transform attackPot_Up;
     [SerializeField] Transform attackPot_Down;
-    
+
     #region 重写基类Unit的方法
     public override void OnCreateView(string viewKey)
     {
@@ -26,4 +26,10 @@ public class MGoblin : Monster
         Pool.Instance.Recycle(this.view);
     }
     #endregion
+
+    void FixedUpdate()
+    {
+        this.UpdateMovment();
+    }
+
 }

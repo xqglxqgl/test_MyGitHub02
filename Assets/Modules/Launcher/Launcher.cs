@@ -23,6 +23,11 @@ public class Launcher : MonoBehaviour
         CreateOnePool(AssetPathUtility.Item_Arrow);
         CreateOnePool(AssetPathUtility.ItemView_ArrowP);
         CreateOnePool(AssetPathUtility.ItemView_ArrowM);
+
+        CreateOnePool(AssetPathUtility.ASPrefab_BGM);
+        CreateOnePool(AssetPathUtility.ASPrefab_CombatSFX);
+        CreateOnePool(AssetPathUtility.ASPrefab_UISFX);
+
     }
 
     private void CreateOnePool(string path)

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class Pool : Singleton<Pool>
@@ -50,6 +51,12 @@ public class Pool : Singleton<Pool>
         }
     }
 
+    //允许延迟回收
+    public void Recycle(GameObject target, float delayTime)
+    {
+        StartCoroutine(RecycleDelay(target, delayTime));
+    }
+
     public void Recycle(GameObject target)
     {
         if (this.instances.ContainsKey(target))
@@ -67,4 +74,12 @@ public class Pool : Singleton<Pool>
             GameObject.Destroy(target);
         }
     }
+
+    //延迟回收的携程
+    private IEnumerator RecycleDelay(GameObject target, float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        Recycle(target);
+    }
+
 }

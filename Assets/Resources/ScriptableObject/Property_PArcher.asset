@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Property_PArcher
   m_EditorClassIdentifier: 
   level: 1
-  damage: 30
+  damage: 1
   moveSpeed: 5
   attackRange: 6
   attackSpeedLevel: 1

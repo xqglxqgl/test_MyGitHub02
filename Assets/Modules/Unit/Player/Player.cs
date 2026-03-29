@@ -12,7 +12,7 @@ public class Player : Unit
     protected Vector2 attackDir { get; set; }
     protected AnimationHandler animationHandler { get; set; }
     protected GameObject view { get; set; }
-    #region 重写基类Unit的方法
+#region 重写基类Unit的方法
     public override void InitProperty(string propertyKey)
     {
         this.gameObject.layer = LayerMask.NameToLayer("Player");// 设置为Player层,确保作为Player参与游戏逻辑
@@ -25,23 +25,9 @@ public class Player : Unit
         this.CurrentHp -= damage;
     }
 
-    #endregion
+#endregion
 
-
-    void Update()
-    {
-        JudgeFlip();
-        IsRunOrIdle();
-        AutoLockTarget();
-
-        JudgeAttack();
-    }
-    void FixedUpdate()
-    {
-        UpdateMovment();
-    }
-
-    private void AutoLockTarget()
+    protected void AutoLockTarget()
     {
         // 玩家自动锁定目标
         this.target = UnitManager.Instance.GetNearestTarget(this, LayerMask.GetMask("Monster"));
@@ -54,7 +40,7 @@ public class Player : Unit
     /// <summary>
     /// 根据玩家输入判断是否需要播放跑步或闲置动画
     /// </summary>
-    private void IsRunOrIdle()
+    protected void IsRunOrIdle()
     {
         if (InputManager.Instance.MovementDir == Vector2.zero)
         {
@@ -69,7 +55,7 @@ public class Player : Unit
     /// <summary>
     /// 通过判断目标是否在攻击范围内来判断是否需要攻击
     /// </summary>
-    private void JudgeAttack()
+    protected void JudgeAttack()
     {
         if (this.target == null) return;
 
@@ -80,7 +66,7 @@ public class Player : Unit
         }
     }
 
-    private void UpdateMovment()
+    protected void UpdateMovment()
     {
         var inputDir = InputManager.Instance.MovementDir;
         var currentPos = this.rigidBody.position;
@@ -88,7 +74,7 @@ public class Player : Unit
         this.rigidBody.MovePosition(currentPos + moveDir);
     }
 
-    private void JudgeFlip()
+    protected void JudgeFlip()
     {
         // 如果攻击距离内有敌人则优先根据敌人位置判断是否需要翻转
         if (this.target != null)

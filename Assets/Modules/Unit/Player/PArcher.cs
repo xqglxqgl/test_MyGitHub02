@@ -13,17 +13,17 @@ public class PArcher : Player
 
         this.animationHandler = this.view.GetComponent<AnimationHandler>();
         // 初始化动画事件
-        this.animationHandler.onShoot += OutShootArrow;
+        this.animationHandler.onShoot += OnOutShootArrow;
     }
 
     public override void OnDie()
     {
         base.OnDie();
-        this.animationHandler.onShoot -= OutShootArrow;
+        this.animationHandler.onShoot -= OnOutShootArrow;
         Pool.Instance.Recycle(this.view);
     }
 
-    private void OutShootArrow()
+    private void OnOutShootArrow()
     {
         var prefab = AssetPathUtility.ItemView_ArrowP;
         var offset = new Vector2(0f, -0.16f);
@@ -42,6 +42,19 @@ public class PArcher : Player
         arrow.OutShootPos = position;
         arrow.transform.position = position;
         arrow.transform.right = dir;
+    }
+
+    void Update()
+    {
+        JudgeFlip();
+        IsRunOrIdle();
+        AutoLockTarget();
+
+        JudgeAttack();
+    }
+    void FixedUpdate()
+    {
+        UpdateMovment();
     }
 
 }

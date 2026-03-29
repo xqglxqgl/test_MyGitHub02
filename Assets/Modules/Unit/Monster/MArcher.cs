@@ -20,4 +20,9 @@ public class MArcher : Monster
         Pool.Instance.Recycle(this.view);
     }
 #endregion
+
+    void FixedUpdate()
+    {
+        this.UpdateMovment();
+    }
 }

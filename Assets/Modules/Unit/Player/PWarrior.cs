@@ -63,4 +63,17 @@ public class PWarrior : Player
         }
     }
 
+    void Update()
+    {
+        JudgeFlip();
+        IsRunOrIdle();
+        AutoLockTarget();
+
+        JudgeAttack();
+    }
+    void FixedUpdate()
+    {
+        UpdateMovment();
+    }
+
 }

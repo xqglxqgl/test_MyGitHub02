@@ -25,11 +25,7 @@ public class Monster : Unit
     }
     #endregion
 
-    private void FixedUpdate()
-    {
-        this.UpdateMovment();
-    }
-    private void UpdateMovment()
+    protected void UpdateMovment()
     {
     }
 }
